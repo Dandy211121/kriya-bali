@@ -28,9 +28,12 @@ html,body{
    WEBSITE LAYOUT
 ============================================ */
 .kb-container{
-  max-width:1100px;
-  margin:0 auto;
+  max-width:100%;
+  width: 100%;
   padding:0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .kb-main{
@@ -91,6 +94,7 @@ html,body{
   background:rgba(255,255,255,.08);
 }
 
+
 /* ============================================
    BUTTONS WEBSITE
 ============================================ */
@@ -107,21 +111,44 @@ html,body{
   filter:brightness(.95);
 }
 
-.kb-btn-outline{
-  display:inline-block;
-  padding:10px 16px;
-  border:2px solid var(--accent-2);
-  border-radius:12px;
-  color:var(--accent-2);
-  text-decoration:none;
-  font-weight:700;
-  background:transparent;
-  transition:.25s;
+/* --- HIASAN TOMBOL KARTU (Pill Button Style) --- */
+
+/* 1. Bentuk Tombol Dasar */
+.kb-btn-outline-sm {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 28px;             /* Padding luas biar enak diklik */
+    
+    /* Warna Tema: Coklat Tua */
+    border: 2px solid #6b4a1e;      
+    color: #6b4a1e !important;      /* Pakai !important biar warna ungu hilang */
+    
+    border-radius: 50px;            /* Membuat sudut sangat bulat (Pill Shape) */
+    text-decoration: none;          /* Hilangkan garis bawah */
+    font-weight: 700;               /* Teks tebal */
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transisi 'membal' halus */
+    
+    /* Posisi icon panah */
+    position: relative;
 }
 
-.kb-btn-outline:hover{
-  background:var(--accent-2);
-  color:#fff;
+/* 2. Efek Hover (Saat Mouse Menyentuh) */
+.kb-btn-outline-sm:hover {
+    background-color: #6b4a1e;      /* Isi tombol jadi coklat penuh */
+    color: #ffffff !important;      /* Teks berubah putih */
+    border-color: #6b4a1e;
+    
+    transform: translateY(-3px);    /* Tombol 'melayang' naik sedikit */
+    box-shadow: 0 8px 20px rgba(107, 74, 30, 0.3); /* Bayangan soft di bawah */
+}
+
+/* 3. Efek Klik (Active) */
+.kb-btn-outline-sm:active {
+    transform: translateY(-1px);    /* Turun sedikit saat diklik (efek tekan) */
+    box-shadow: 0 4px 10px rgba(107, 74, 30, 0.3);
 }
 
 /* ============================================
@@ -139,6 +166,61 @@ html,body{
   border-radius:var(--radius);
   padding:16px;
   box-shadow:var(--shadow);
+}
+
+/* 1. KEMBALIKAN GRID (Agar berjejer 3 ke samping) */
+.kb-home-cards {
+    display: grid;
+    /* Ini kuncinya: membagi kolom secara otomatis */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 25px;
+    margin-top: 30px;
+    max-width: 1000px;     /* Kita batasi lebarnya agar tidak mentok ke pinggir */
+    margin-left: auto;     /* Margin auto membuat container ini... */
+    margin-right: auto;    /* ...otomatis berada di tengah (Center) */
+    margin-top: 40px;
+    padding: 0 20px;       /* Jarak aman tambahan di kiri & kanan layar HP */
+}
+
+/* 2. STYLE KARTU (Agar rapi tengah) */
+.kb-card-feature {
+    background: #fff;
+    text-align: center;
+    padding: 50px 40px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(107, 74, 30, 0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    /* Flexbox biar isi kartu rapi di tengah */
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: space-between;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.kb-card-feature:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+}
+
+/* --- UPDATE UKURAN IKON --- */
+
+.kb-icon-large {
+    font-size: 5rem;       /* Sebelumnya 3.5rem, sekarang diperbesar jadi 5rem */
+    margin-bottom: 25px;   /* Tambah jarak bawah sedikit biar tidak nempel judul */
+    display: block;
+    line-height: 1;        /* Menjaga tinggi baris agar tidak memakan tempat berlebih */
+    
+    /* Efek bayangan halus agar ikon terlihat 'pop-up' */
+    filter: drop-shadow(0 5px 8px rgba(0,0,0,0.2));
+    
+    /* Opsional: Animasi kecil saat kartu di-hover */
+    transition: transform 0.3s ease;
+}
+
+/* Efek tambahan: Ikon ikut goyang sedikit saat kartu disorot */
+.kb-card-feature:hover .kb-icon-large {
+    transform: scale(1.1) rotate(5deg); /* Membesar & miring sedikit */
 }
 
 .table{
@@ -193,8 +275,10 @@ button:hover{
 .kb-footer{
   background:#2d1e0e;
   color:#f6e8cb;
-  padding:18px 0;
+  padding:25px 0;
   text-align:center;
+  /* --- TAMBAHAN PENTING --- */
+    margin-top: 50px;    /* Memberi jarak jauh dari konten di atasnya */
 }
 
 /* ============================================
@@ -225,4 +309,93 @@ button:hover{
   padding:12px 22px;
   border-radius:8px;
 }
+
+/* --- HERO SECTION (SLIDESHOW AMAN) --- */
+
+/* 1. Wadah Utama (Parent) */
+.kb-hero {
+    position: relative;      /* KUNCI: Agar elemen di dalamnya bisa ditumpuk */
+    height: 550px;           /* Tinggi tetap agar layout tidak lompat-lompat saat ganti gambar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    border-radius: var(--radius);
+    overflow: hidden;        /* Mencegah gambar keluar dari sudut membulat */
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+    background-color: #6b4a1e; /* Warna cadangan jika gambar gagal loading */
+}
+
+/* 2. Area Slideshow (Lapisan Paling Bawah: z-index 0) */
+.kb-hero-slideshow {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+}
+
+/* Gambar Slide Individual */
+.kb-slide {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out; /* Transisi halus */
+}
+
+.kb-slide.active {
+    opacity: 1;
+    transform: scale(1.05); /* Efek zoom sedikit agar dinamis */
+    transition: opacity 1.5s ease-in-out, transform 6s linear;
+}
+
+/* 3. Overlay Gelap (Lapisan Tengah: z-index 1) */
+/* Ini PENTING agar teks putih tetap terbaca di atas gambar terang */
+.kb-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(45, 30, 14, 0.6); /* Hitam kecoklatan transparan */
+    z-index: 1;
+}
+
+/* 4. Konten Teks & Logo (Lapisan Paling Atas: z-index 2) */
+.kb-hero-content {
+    position: relative;
+    z-index: 2;              /* Paling tinggi, supaya tombol bisa diklik */
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* Logo dengan Perbaikan Padding */
+.kb-hero-logo {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    background: white;
+    border-radius: 25%;
+    border: 4px solid rgba(255,255,255,0.9);
+    margin-bottom: 20px;          /* Padding besar agar logo masuk ke tengah & tidak terpotong */
+    box-shadow: 0 0 25px rgba(0,0,0,0.2);
+}
+
+.kb-hero h1 {
+    font-size: 2.5rem;
+    margin: 10px 0;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.kb-hero p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto 25px auto;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+
+
+
 
