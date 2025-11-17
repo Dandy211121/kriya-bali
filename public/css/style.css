@@ -394,7 +394,138 @@ button:hover{
     margin: 0 auto 25px auto;
     text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 16px;
+}
 
+/* Header */
+.header-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #78350f;
+  text-align: center;
+}
+
+.header-line {
+  width: 100px;
+  height: 6px;
+  background: linear-gradient(to right, #facc15, #b45309);
+  border-radius: 3px;
+  margin: 12px auto 20px;
+}
+
+/* Filter Box */
+.filter-box {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.input, .select {
+  width: 100%;
+  padding: 12px 40px 12px 44px;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.input:focus, .select:focus {
+  outline: 2px solid #d97706;
+}
+
+.icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b45309;
+}
+
+/* Badge Filter */
+.badge {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.badge-reset {
+  color: #b45309;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Result Count */
+.result-count {
+  color: #78350f;
+  margin-bottom: 20px;
+}
+
+/* Grid List */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.card-title {
+  font-size: 20px;
+  color: #78350f;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.card-sub {
+  color: #b45309;
+  font-size: 15px;
+}
+
+/* Empty State */
+.empty {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 12px;
+}
+
+.button-reset {
+  padding: 10px 20px;
+  background: #b45309;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.button-reset:hover {
+  background: #92400e;
+}
 
 
 
