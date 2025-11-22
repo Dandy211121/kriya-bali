@@ -46,6 +46,7 @@ require_once __DIR__ . '/_layout_start.php';
 
     <div class="mt-4">
         <button class="kb-admin-btn">Simpan</button>
+        <a href="pengrajin-list.php" class="kb-admin-btn">Batal</a>
     </div>
 </form>
 

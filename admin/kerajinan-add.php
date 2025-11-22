@@ -72,6 +72,7 @@ require_once __DIR__ . '/_layout_start.php';
     </div>
 
     <button class="kb-admin-btn">Simpan</button>
+    <a href="pengrajin-list.php"class="kb-admin-btn">Batal</a>
 </form>
 
 <?php require_once __DIR__ . '/_layout_end.php'; ?>

@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass  = trim($_POST['password']);
     $pass2 = trim($_POST['password2']);
 
+    // Validasi
     if ($name === '' || $email === '' || $pass === '') {
         $error = "Semua field wajib diisi.";
     }
@@ -32,14 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Konfirmasi password tidak cocok.";
     }
     else {
-        // cek email sudah ada atau belum
+        // cek apakah email sudah dipakai
         $cek = db_fetch("SELECT id FROM users WHERE email = :e", ['e' => $email]);
 
         if ($cek) {
             $error = "Email sudah digunakan.";
         } else {
 
-            // Auto verified
+            // Simpan user baru
             db_exec("
                 INSERT INTO users (name, email, password, role, is_verified, verified_at)
                 VALUES (:n, :e, :p, 'user', 1, NOW())
@@ -49,11 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'p' => password_hash($pass, PASSWORD_DEFAULT)
             ]);
 
-            // Auto login
-            $user = db_fetch("SELECT * FROM users WHERE email = :e", ['e' => $email]);
-            $_SESSION['user'] = $user;
-
-            header("Location: {$BASE_URL}");
+            // Arahkan ke halaman login TANPA auto login
+            header("Location: {$BASE_URL}login.php?registered=1");
             exit;
         }
     }
@@ -65,13 +63,14 @@ include __DIR__ . '/partials/navbar.php';
 
 <div class="container py-5">
 
-    <!-- CARD REGISTER -->
     <div class="row justify-content-center">
         <div class="col-md-6">
 
             <div class="card shadow-lg p-4" style="border-radius:18px;">
-                
-                <h2 class="fw-bold text-center mb-4" style="color:#8B5E34;">Daftar Akun Pengguna</h2>
+
+                <h2 class="fw-bold text-center mb-4" style="color:#8B5E34;">
+                    Daftar Akun Pengguna
+                </h2>
 
                 <?php if ($error): ?>
                     <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>

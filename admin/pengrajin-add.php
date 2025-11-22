@@ -37,7 +37,7 @@ $regions = db_fetch_all("SELECT id, name FROM regions ORDER BY name");
 
     <div class="mt-4">
         <button class="kb-admin-btn">Simpan</button>
-        <a href="pengrajin-list.php" class="kb-btn-delete">Batal</a>
+        <a href="pengrajin-list.php" class="kb-admin-btn">Batal</a>
     </div>
 </form>
 

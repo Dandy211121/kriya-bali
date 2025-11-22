@@ -29,21 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Query admin
         if ($role === 'admin') {
-            $user = db_fetch(
-                "SELECT * FROM users 
-                 WHERE email = :email
-                 AND (role = 'admin' OR role = 'superadmin')",
-                ['email' => $email]
-            );
-        }
+            $user = db_fetch("
+                SELECT * FROM users
+                WHERE email = :email
+                AND (role = 'admin' OR role = 'superadmin')
+            ", ['email' => $email]);
+        } 
         // Query user biasa
         else {
-            $user = db_fetch(
-                "SELECT * FROM users
-                 WHERE email = :email
-                 AND role = 'user'",
-                ['email' => $email]
-            );
+            $user = db_fetch("
+                SELECT * FROM users
+                WHERE email = :email
+                AND role = 'user'
+            ", ['email' => $email]);
         }
 
         if ($user && password_verify($pass, $user['password'])) {
@@ -54,11 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 session_regenerate_id(true);
                 $_SESSION['user'] = $user;
 
-                if ($user['role'] === 'admin' || $user['role'] === 'superadmin')
+                if ($user['role'] === 'admin' || $user['role'] === 'superadmin') {
                     header("Location: {$BASE_URL}admin/dashboard.php");
-                else
+                } else {
                     header("Location: {$BASE_URL}");
-
+                }
                 exit;
             }
         }
@@ -72,16 +70,23 @@ include __DIR__ . '/partials/navbar.php';
 ?>
 
 <div class="container py-5">
-
     <div class="row justify-content-center">
 
         <div class="col-md-5">
             <div class="card shadow-lg p-4" style="border-radius:18px;">
 
-                <h2 class="fw-bold text-center mb-4" style="color:#8B5E34;">
+                <h2 class="fw-bold text-center mb-3" style="color:#8B5E34;">
                     <?= ($role === 'admin') ? 'Login Admin' : 'Login Pengguna'; ?>
                 </h2>
 
+                <!-- Notifikasi setelah pendaftaran -->
+                <?php if (isset($_GET['registered'])): ?>
+                    <div class="alert alert-success text-center">
+                        Pendaftaran berhasil! Silakan login.
+                    </div>
+                <?php endif; ?>
+
+                <!-- Error Login -->
                 <?php if ($error): ?>
                     <div class="alert alert-danger text-center"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
@@ -106,7 +111,6 @@ include __DIR__ . '/partials/navbar.php';
                     </button>
                 </form>
 
-                <!-- REGISTER LINK -->
                 <div class="text-center mt-4">
                     <?php if ($role === 'user'): ?>
                         Belum punya akun?
@@ -125,7 +129,6 @@ include __DIR__ . '/partials/navbar.php';
         </div>
 
     </div>
-
 </div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
