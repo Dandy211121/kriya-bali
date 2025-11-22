@@ -20,52 +20,93 @@ $data = db_fetch("
 
 // Jika tidak ditemukan
 if (!$data) {
-    echo "<p class='kb-empty'>Kerajinan tidak ditemukan.</p>";
+    echo "<div class='container py-5 text-center'>
+            <h3 class='text-danger'>Kerajinan tidak ditemukan.</h3>
+          </div>";
     require_once __DIR__ . '/partials/footer.php';
     exit;
 }
 ?>
 
-<h1 class="kb-title"><?= htmlspecialchars($data['title']) ?></h1>
+<div class="container py-5">
 
-<div class="kb-detail">
+    <!-- TITLE -->
+    <h1 class="fw-bold text-center mb-4" style="color:#8B5E34;">
+        <?= htmlspecialchars($data['title']) ?>
+    </h1>
 
-    <div class="kb-detail-image">
-        <?php if ($data['image_path']): ?>
-            <img src="<?= asset($data['image_path']) ?>" 
-                 alt="Gambar Kerajinan" 
-                 style="max-width:350px; border-radius:10px;">
-        <?php else: ?>
-            <div class="kb-no-image">Tidak ada gambar</div>
-        <?php endif; ?>
-    </div>
+    <div class="row g-4">
 
-    <div class="kb-detail-info">
+        <!-- LEFT: IMAGE -->
+        <div class="col-md-5 text-center">
+            <?php if ($data['image_path']): ?>
+                <img src="<?= asset($data['image_path']) ?>" 
+                     class="shadow-lg"
+                     style="width:100%; max-width:400px; border-radius:14px; object-fit:cover;">
+            <?php else: ?>
+                <div class="bg-secondary text-white p-5 rounded">
+                    Tidak ada gambar
+                </div>
+            <?php endif; ?>
+        </div>
 
-        <p><b>Kategori:</b> 
-            <?= htmlspecialchars($data['category_name'] ?? '-') ?>
-        </p>
+        <!-- RIGHT: DETAIL INFO -->
+        <div class="col-md-7">
 
-        <p><b>Pengrajin:</b> 
-            <?= htmlspecialchars($data['artisan_name'] ?? '-') ?>
-        </p>
+            <div class="mb-3">
+                <span class="badge bg-warning text-dark fw-bold px-3 py-2 mb-2">
+                    <?= htmlspecialchars($data['category_name'] ?? 'Tidak ada kategori') ?>
+                </span>
 
-        <p><b>Asal Daerah:</b> 
-            <?= htmlspecialchars($data['region_name'] ?? '-') ?>
-        </p>
+                <span class="badge bg-light text-dark border fw-semibold px-3 py-2 mb-2">
+                    📍 <?= htmlspecialchars($data['region_name'] ?? '-') ?>
+                </span>
+            </div>
 
-        <p><b>Harga:</b> 
-            Rp <?= number_format($data['price'], 0, ',', '.') ?>
-        </p>
-
-        <?php if ($data['description']): ?>
-            <p><b>Deskripsi:</b><br>
-                <?= nl2br(htmlspecialchars($data['description'])) ?>
+            <p class="fs-5">
+                <b>Pengrajin:</b>  
+                <span style="color:#8B5E34;">
+                    <?= htmlspecialchars($data['artisan_name'] ?? '-') ?>
+                </span>
             </p>
-        <?php endif; ?>
 
-        <a href="<?= $BASE_URL ?>kerajinan.php" 
-           class="kb-btn kb-btn-outline">← Kembali</a>
+            <p class="fs-5">
+                <b>Harga:</b>  
+                <span class="fw-bold" style="color:#B8863B;">
+                    Rp <?= number_format($data['price'], 0, ',', '.') ?>
+                </span>
+            </p>
+
+            <?php if ($data['description']): ?>
+            <div class="mt-4">
+                <b class="d-block mb-2">Deskripsi Kerajinan:</b>
+                <div class="p-3 rounded" 
+                     style="background:#FFF3D9; border-left:5px solid #D4A15A;">
+                    <?= nl2br(htmlspecialchars($data['description'])) ?>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <div class="mt-4 d-flex gap-3">
+
+                <!-- Tombol Kembali -->
+                <a href="<?= $BASE_URL ?>kerajinan.php" 
+                   class="btn btn-outline-warning fw-bold px-4 rounded-pill">
+                    ← Kembali
+                </a>
+
+                <!-- Tombol Lihat Pengrajin -->
+                <?php if ($data['artisan_id']): ?>
+                <a href="<?= $BASE_URL ?>pengrajin-detail.php?id=<?= $data['artisan_id'] ?>"
+                   class="btn btn-warning fw-bold px-4 rounded-pill">
+                    Profil Pengrajin →
+                </a>
+                <?php endif; ?>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>

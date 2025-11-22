@@ -2,72 +2,70 @@
 require_once __DIR__ . '/../config/db.php';
 require_admin();
 
-// Validasi ID
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$GLOBALS['active_menu'] = 'pengrajin';
 
-// Ambil data pengrajin
-$row = db_fetch("SELECT * FROM artisans WHERE id = :id", ['id' => $id]);
+$id = intval($_GET['id'] ?? 0);
 
-if (!$row) {
-    die("<p style='color:red;'>Pengrajin tidak ditemukan.</p>");
+$data = db_fetch("
+    SELECT * FROM artisans WHERE id = :id
+", ['id' => $id]);
+
+if (!$data) {
+    die("<p>Pengrajin tidak ditemukan.</p>");
 }
 
-// Ambil daftar region
-$regions = db_fetch_all("SELECT id, name FROM regions ORDER BY name ASC");
-
-// Proses form ketika disubmit
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // CSRF protection
-    require_csrf();
-    $name = trim($_POST['name']);
-    $region_id = $_POST['region_id'];
-
-    if ($name === '' || $region_id === '') {
-        $error = "Semua field wajib diisi.";
-    } else {
-        db_exec("
-            UPDATE artisans 
-            SET name = :name, region_id = :region 
-            WHERE id = :id
-        ", [
-            'name'   => $name,
-            'region' => $region_id,
-            'id'     => $id
-        ]);
-
-        header("Location: " . $BASE_URL . "admin/pengrajin-list.php");
-        exit;
-    }
-}
+$regions = db_fetch_all("SELECT id, name FROM regions ORDER BY name");
 
 require_once __DIR__ . '/_layout_start.php';
 ?>
 
 <h1 class="kb-admin-title">Edit Pengrajin</h1>
 
-<?php if (!empty($error)): ?>
-    <div class="kb-alert kb-alert-error"><?= htmlspecialchars($error) ?></div>
-<?php endif; ?>
+<div class="kb-admin-card">
 
-<form method="post" class="kb-form">
-    <?= csrf_field() ?>
+    <form method="POST" action="pengrajin-edit-save.php" enctype="multipart/form-data">
 
-    <label>Nama Pengrajin:</label>
-    <input type="text" name="name" value="<?= htmlspecialchars($row['name']) ?>" required>
+        <?= csrf_field() ?>
+        <input type="hidden" name="id" value="<?= $data['id'] ?>">
 
-    <label>Asal Daerah:</label>
-    <select name="region_id" required>
-        <option value="">-- Pilih Daerah --</option>
-        <?php foreach ($regions as $r): ?>
-            <option value="<?= $r['id'] ?>" 
-                <?= $r['id'] == $row['region_id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($r['name']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+        <label>Nama Pengrajin</label>
+        <input type="text" name="name" value="<?= htmlspecialchars($data['name']) ?>" required>
 
-    <button type="submit" class="kb-btn kb-btn-primary">Simpan Perubahan</button>
-    <a href="<?= $BASE_URL . 'admin/pengrajin-list.php' ?>" class="kb-btn kb-btn-outline">← Kembali</a>
-</form>
+        <label>Daerah</label>
+        <select name="region_id" required>
+            <option value="">Pilih Daerah</option>
+            <?php foreach ($regions as $r): ?>
+                <option value="<?= $r['id'] ?>" <?= $r['id'] == $data['region_id'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($r['name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+        <label>Deskripsi</label>
+        <textarea name="description" rows="4"><?= htmlspecialchars($data['description']) ?></textarea>
+
+        <label>Foto Pengrajin (Opsional)</label>
+        <input type="file" name="image"
+
+        <!-- Preview Foto -->
+        <?php if ($data['photo_path']): ?>
+            <p>Foto Lama:</p>
+            <img src="<?= asset($data['photo_path']) ?>" 
+                 style="width:100px; border-radius:10px; margin-bottom:12px;">
+        <?php endif; ?>
+
+        <div style="margin-top: 20px; display: flex; gap: 12px;">
+            <button class="kb-admin-btn">
+                <i class="bi bi-save"></i> Update
+            </button>
+
+            <a href="pengrajin-list.php" class="kb-btn-delete" style="text-decoration:none;">
+                <i class="bi bi-x-circle"></i> Batal
+            </a>
+        </div>
+
+    </form>
+
+</div>
 
 <?php require_once __DIR__ . '/_layout_end.php'; ?>

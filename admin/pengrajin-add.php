@@ -2,54 +2,48 @@
 require_once __DIR__ . '/../config/db.php';
 require_admin();
 
-// Ambil daftar region
-$regions = db_fetch_all("SELECT id, name FROM regions ORDER BY name ASC");
-
-// Jika form disubmit
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // CSRF protection
-    require_csrf();
-    $nama = trim($_POST['name']);
-    $asal = $_POST['region_id'];
-
-    if ($nama === '' || $asal === '') {
-        $error = "Semua field wajib diisi.";
-    } else {
-        db_exec("INSERT INTO artisans (name, region_id) VALUES (:name, :region)", [
-            'name'   => $nama,
-            'region' => $asal
-        ]);
-
-        header("Location: " . $BASE_URL . "admin/pengrajin-list.php");
-        exit;
-    }
-}
-
+$GLOBALS['active_menu'] = 'pengrajin';
 require_once __DIR__ . '/_layout_start.php';
+
+$regions = db_fetch_all("SELECT id, name FROM regions ORDER BY name");
 ?>
 
 <h1 class="kb-admin-title">Tambah Pengrajin</h1>
 
-<?php if (!empty($error)): ?>
-    <div class="kb-alert kb-alert-error"><?= htmlspecialchars($error) ?></div>
-<?php endif; ?>
+<div class="kb-admin-card">
 
-<form method="POST" class="kb-form">
-    <?= csrf_field() ?>
+    <form method="POST" action="pengrajin-save.php" enctype="multipart/form-data">
+        <?= csrf_field() ?>
 
-    <label>Nama Pengrajin:</label>
-    <input type="text" name="name" required>
+        <label>Nama Pengrajin</label>
+        <input type="text" name="name" required>
 
-    <label>Asal Daerah:</label>
-    <select name="region_id" required>
-        <option value="">-- Pilih Daerah --</option>
-        <?php foreach ($regions as $r): ?>
-            <option value="<?= $r['id'] ?>"><?= htmlspecialchars($r['name']) ?></option>
-        <?php endforeach; ?>
-    </select>
+        <label>Daerah</label>
+        <select name="region_id" required>
+            <option value="">Pilih Daerah</option>
+            <?php foreach ($regions as $r): ?>
+                <option value="<?= $r['id'] ?>"><?= htmlspecialchars($r['name']) ?></option>
+            <?php endforeach; ?>
+        </select>
 
-    <button class="kb-btn kb-btn-success">Simpan</button>
-    <a href="<?= $BASE_URL . 'admin/pengrajin-list.php' ?>" class="kb-btn kb-btn-outline">← Kembali</a>
-</form>
+        <label>Deskripsi</label>
+        <textarea name="description" rows="4"></textarea>
+
+        <label>Foto Pengrajin</label>
+        <input type="file" name="image">
+
+        <div style="margin-top: 20px; display: flex; gap: 12px;">
+            <button class="kb-admin-btn">
+                <i class="bi bi-check-circle"></i> Simpan
+            </button>
+
+            <a href="pengrajin-list.php" class="kb-btn-delete" style="text-decoration:none;">
+                <i class="bi bi-x-circle"></i> Batal
+            </a>
+        </div>
+
+    </form>
+
+</div>
 
 <?php require_once __DIR__ . '/_layout_end.php'; ?>

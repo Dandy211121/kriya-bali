@@ -1,11 +1,8 @@
 <?php 
-require_once __DIR__.'/partials/header.php'; 
-require_once __DIR__.'/partials/navbar.php'; 
-?>
+require_once __DIR__.'/partials/header.php';
+require_once __DIR__.'/partials/navbar.php';
 
-<h1 class="kb-title">Daftar Kerajinan</h1>
-
-<?php
+// Ambil filter
 $q       = $_GET['q'] ?? '';
 $region  = $_GET['region'] ?? '';
 $cat     = $_GET['cat'] ?? '';
@@ -31,119 +28,159 @@ $sql = "
 
 $params = [];
 
-// Filter
+// Filters
 if ($q !== '') {
     $sql .= " AND cr.title LIKE ?";
     $params[] = "%$q%";
 }
-
 if ($region !== '') {
     $sql .= " AND cr.region_id = ?";
     $params[] = $region;
 }
-
 if ($cat !== '') {
     $sql .= " AND cr.category_id = ?";
     $params[] = $cat;
 }
-
 if ($artisan !== '') {
     $sql .= " AND cr.artisan_id = ?";
     $params[] = $artisan;
 }
 
-// Eksekusi
 $rows = db_fetch_all($sql, $params);
 ?>
 
-<!-- Form Filter -->
-<form class="kb-grid four" method="get">
+<div class="container py-5">
 
-    <input type="text" name="q" 
-           value="<?= htmlspecialchars($q) ?>" 
-           placeholder="Cari kerajinan...">
+    <!-- TITLE -->
+    <h1 class="header-title">Galeri Kerajinan Bali</h1>
+    <div class="header-line"></div>
+    <p class="text-center" style="max-width:650px; margin:auto; color:#92400e;">
+        Temukan berbagai karya seni tradisional Bali, mulai dari ukiran, anyaman, hingga lukisan handmade.
+    </p>
 
-    <select name="region">
-        <option value="">Semua Daerah</option>
-        <?php foreach($regions as $r): ?>
-            <option value="<?= $r['id'] ?>" 
-                <?= $region == $r['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($r['name']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+    <!-- FILTER FORM -->
+    <form method="GET" class="filter-box mt-4">
 
-    <select name="cat">
-        <option value="">Semua Kategori</option>
-        <?php foreach($cats as $c): ?>
-            <option value="<?= $c['id'] ?>" 
-                <?= $cat == $c['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($c['name']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+        <div class="row g-3">
 
-    <select name="artisan">
-        <option value="">Semua Pengrajin</option>
-        <?php foreach($artisans as $a): ?>
-            <option value="<?= $a['id'] ?>" 
-                <?= $artisan == $a['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($a['name']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+            <!-- Search -->
+            <div class="col-md-3 position-relative">
+                <i class="bi bi-search icon"></i>
+                <input 
+                    type="text" 
+                    name="q"
+                    class="form-control input"
+                    placeholder="Cari kerajinan..."
+                    value="<?= htmlspecialchars($q) ?>">
+            </div>
 
-    <button class="kb-btn">Cari</button>
-    <a href="<?= $BASE_URL ?>kerajinan.php" class="kb-btn kb-btn-outline">Reset</a>
+            <!-- Region -->
+            <div class="col-md-3 position-relative">
+                <i class="bi bi-geo-alt icon"></i>
+                <select name="region" class="form-select select">
+                    <option value="">Semua Daerah</option>
+                    <?php foreach ($regions as $r): ?>
+                        <option value="<?= $r['id'] ?>" <?= $region == $r['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($r['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-</form>
+            <!-- Category -->
+            <div class="col-md-3 position-relative">
+                <i class="bi bi-tag icon"></i>
+                <select name="cat" class="form-select select">
+                    <option value="">Semua Kategori</option>
+                    <?php foreach ($cats as $c): ?>
+                        <option value="<?= $c['id'] ?>" <?= $cat == $c['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($c['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-<!-- Tabel Data Kerajinan -->
-<table class="table kb-table">
-    <thead>
-        <tr>
-            <th>Gambar</th>
-            <th>Judul</th>
-            <th>Daerah</th>
-            <th>Kategori</th>
-            <th>Pengrajin</th>
-            <th>Detail</th>
-        </tr>
-    </thead>
-    <tbody>
+            <!-- Artisan -->
+            <div class="col-md-3 position-relative">
+                <i class="bi bi-person icon"></i>
+                <select name="artisan" class="form-select select">
+                    <option value="">Semua Pengrajin</option>
+                    <?php foreach ($artisans as $a): ?>
+                        <option value="<?= $a['id'] ?>" <?= $artisan == $a['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($a['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-        <?php if (!$rows): ?>
-            <tr>
-                <td colspan="6" class="kb-empty">Tidak ada data ditemukan.</td>
-            </tr>
-        <?php else: ?>
+        </div>
+
+        <div class="text-end mt-3">
+            <button class="btn btn-warning fw-bold px-4">Terapkan Filter</button>
+            <a href="kerajinan.php" class="btn btn-outline-warning fw-bold px-4 ms-2">Reset</a>
+        </div>
+    </form>
+
+    <!-- RESULTS COUNT -->
+    <p class="result-count mt-3">
+        Menampilkan <b><?= count($rows) ?></b> kerajinan
+    </p>
+
+    <!-- LIST DATA -->
+    <?php if ($rows): ?>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+
             <?php foreach ($rows as $row): ?>
-                <tr>
-                    <td>
-                        <?php if ($row['image_path']): ?>
-                            <img src="<?= asset($row['image_path']) ?>" 
-                                 style="width:70px; border-radius:6px;">
-                        <?php else: ?>
-                            <span class="kb-muted">Tidak ada</span>
-                        <?php endif; ?>
-                    </td>
+            <div class="col">
+                <div class="card shadow-sm h-100">
 
-                    <td><?= htmlspecialchars($row['title']) ?></td>
-                    <td><?= htmlspecialchars($row['region_name']) ?></td>
-                    <td><?= htmlspecialchars($row['cat_name']) ?></td>
-                    <td><?= htmlspecialchars($row['artisan_name']) ?></td>
+                    <!-- Image -->
+                    <?php if ($row['image_path']): ?>
+                        <img src="<?= asset($row['image_path']) ?>" 
+                             class="card-img-top" 
+                             style="height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;">
+                    <?php else: ?>
+                        <div class="bg-secondary text-white p-5 text-center" 
+                             style="border-radius: 12px 12px 0 0;">
+                            Tidak ada gambar
+                        </div>
+                    <?php endif; ?>
 
-                    <td>
-                        <a class="kb-link"
-                           href="<?= $BASE_URL ?>kerajinan-detail.php?id=<?= $row['id'] ?>">
-                            Lihat
+                    <!-- Content -->
+                    <div class="card-body">
+
+                        <h5 class="card-title fw-bold" style="color:#8B5E34;">
+                            <?= htmlspecialchars($row['title']) ?>
+                        </h5>
+
+                        <p class="text-muted small">📍 <?= htmlspecialchars($row['region_name']) ?></p>
+                        <p class="text-muted small">🎨 <?= htmlspecialchars($row['cat_name']) ?></p>
+                        <p class="text-muted small">👤 <?= htmlspecialchars($row['artisan_name']) ?></p>
+
+                        <a href="<?= $BASE_URL ?>kerajinan-detail.php?id=<?= $row['id'] ?>"
+                           class="btn btn-outline-warning rounded-pill fw-bold px-3 mt-2">
+                            Lihat Detail →
                         </a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
 
-    </tbody>
-</table>
+                    </div>
+
+                </div>
+            </div>
+            <?php endforeach; ?>
+
+        </div>
+
+    <?php else: ?>
+
+        <div class="empty mt-5">
+            <div class="empty-icon">😔</div>
+            <h3 class="fw-bold" style="color:#78350f;">Tidak Ada Kerajinan</h3>
+            <p style="color:#b45309;">Tidak ditemukan kerajinan yang cocok dengan filter Anda.</p>
+        </div>
+
+    <?php endif; ?>
+
+</div>
 
 <?php include __DIR__.'/partials/footer.php'; ?>

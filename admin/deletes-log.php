@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
-// Hanya superadmin yang boleh melihat log penghapusan
+// Hanya superadmin
 require_superadmin();
 
 $q = trim($_GET['q'] ?? '');
@@ -9,69 +9,116 @@ $page = max(1, intval($_GET['page'] ?? 1));
 $perPage = 20;
 $offset = ($page - 1) * $perPage;
 
+// WHERE filter
 $where = '';
 $params = [];
+
 if ($q !== '') {
     $where = "WHERE table_name LIKE :q OR deleted_by_name LIKE :q OR ip_address LIKE :q";
     $params['q'] = "%$q%";
 }
 
+// total count
 $countRow = db_fetch("SELECT COUNT(*) AS c FROM deletes_log $where", $params);
 $total = $countRow['c'] ?? 0;
-$totalPages = ($total > 0) ? ceil($total / $perPage) : 1;
+$totalPages = max(1, ceil($total / $perPage));
 
+// data
 $sql = "SELECT * FROM deletes_log $where ORDER BY id DESC LIMIT $perPage OFFSET $offset";
 $rows = ($q !== '') ? db_fetch_all($sql, $params) : db_fetch_all($sql);
 
 require_once __DIR__ . '/_layout_start.php';
 ?>
 
-<h1 class="kb-admin-title">Log Penghapusan</h1>
+<h1 class="kb-admin-title">
+    <i class="bi bi-trash2-fill"></i>
+    Log Penghapusan
+</h1>
 
-<form method="get" class="kb-admin-search" style="margin-bottom:16px;">
-    <input type="text" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Cari table, user, atau IP..." style="padding:8px 12px;border-radius:8px;border:1px solid #ddd;">
-    <button class="kb-btn kb-btn-outline" type="submit">Cari</button>
-</form>
+<p class="kb-muted" style="margin-top:-6px;">
+    Semua aktivitas penghapusan akan dicatat di sini.
+</p>
 
-<table class="table kb-admin-table">
-    <tr>
-        <th>#</th>
-        <th>Tabel</th>
-        <th>Deleted ID</th>
-        <th>Deleted By</th>
-        <th>User ID</th>
-        <th>IP</th>
-        <th>Waktu</th>
-    </tr>
+<div class="kb-admin-card" style="margin-top:20px;">
 
-    <?php if (!$rows): ?>
+    <!-- Search -->
+    <form method="get" style="display:flex; gap:10px; margin-bottom:18px;">
+        <input 
+            type="text" 
+            name="q" 
+            value="<?= htmlspecialchars($q) ?>" 
+            class="kb-admin-input"
+            style="flex:1;"
+            placeholder="Cari nama tabel, user, atau alamat IP..."
+        >
+        <button class="kb-btn kb-btn-primary">
+            <i class="bi bi-search"></i> Cari
+        </button>
+    </form>
+
+    <!-- Table -->
+    <table class="kb-admin-table">
         <tr>
-            <td colspan="7" class="kb-empty">Belum ada log.</td>
+            <th>#</th>
+            <th>Tabel</th>
+            <th>ID Terhapus</th>
+            <th>Dihapus Oleh</th>
+            <th>User ID</th>
+            <th>IP Address</th>
+            <th>Waktu</th>
         </tr>
-    <?php else: ?>
-        <?php foreach ($rows as $r): ?>
+
+        <?php if (!$rows): ?>
             <tr>
-                <td><?= $r['id'] ?></td>
-                <td><?= htmlspecialchars($r['table_name']) ?></td>
-                <td><?= $r['deleted_id'] ?></td>
-                <td><?= htmlspecialchars($r['deleted_by_name'] ?? '-') ?></td>
-                <td><?= htmlspecialchars($r['user_id'] ?? '-') ?></td>
-                <td><?= htmlspecialchars($r['ip_address'] ?? '-') ?></td>
-                <td><?= htmlspecialchars($r['created_at']) ?></td>
+                <td colspan="7" class="kb-empty">Belum ada log.</td>
             </tr>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <?php else: ?>
+            <?php foreach ($rows as $r): ?>
+                <tr>
+                    <td><?= $r['id'] ?></td>
 
-</table>
+                    <td>
+                        <span class="kb-badge kb-badge-brown">
+                            <?= htmlspecialchars($r['table_name']) ?>
+                        </span>
+                    </td>
 
-<div style="margin-top:16px;">
-    <?php if ($page > 1): ?>
-        <a class="kb-btn kb-btn-outline" href="?q=<?= urlencode($q) ?>&page=<?= $page-1 ?>">&laquo; Prev</a>
-    <?php endif; ?>
+                    <td>
+                        <b><?= $r['deleted_id'] ?></b>
+                    </td>
 
-    <?php if ($page < $totalPages): ?>
-        <a class="kb-btn kb-btn-outline" href="?q=<?= urlencode($q) ?>&page=<?= $page+1 ?>">Next &raquo;</a>
-    <?php endif; ?>
+                    <td><?= htmlspecialchars($r['deleted_by_name'] ?? '-') ?></td>
+                    <td><?= htmlspecialchars($r['user_id'] ?? '-') ?></td>
+
+                    <td>
+                        <span class="kb-badge kb-badge-gold">
+                            <?= htmlspecialchars($r['ip_address'] ?? '-') ?>
+                        </span>
+                    </td>
+
+                    <td><?= htmlspecialchars($r['created_at']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </table>
+
+    <!-- Pagination -->
+    <div style="margin-top:20px; text-align:center;">
+        <?php if ($page > 1): ?>
+            <a class="kb-btn kb-btn-outline" 
+               href="?q=<?= urlencode($q) ?>&page=<?= $page-1 ?>">
+               &laquo; Prev
+            </a>
+        <?php endif; ?>
+
+        <?php if ($page < $totalPages): ?>
+            <a class="kb-btn kb-btn-outline" 
+               href="?q=<?= urlencode($q) ?>&page=<?= $page+1 ?>">
+               Next &raquo;
+            </a>
+        <?php endif; ?>
+    </div>
+
 </div>
 
 <?php require_once __DIR__ . '/_layout_end.php'; ?>

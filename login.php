@@ -1,11 +1,11 @@
 <?php
 require_once __DIR__ . '/config/db.php';
 
-// ---- Ambil role login ----
-$role = $_GET['role'] ?? ($_POST['role'] ?? 'user'); // default login user
+// Role login
+$role = $_GET['role'] ?? ($_POST['role'] ?? 'user');
 $error = '';
 
-// ---- Jika user sudah login ----
+// Jika sudah login
 if (is_logged_in()) {
     $r = $_SESSION['user']['role'];
     if ($r === 'admin' || $r === 'superadmin') {
@@ -16,7 +16,7 @@ if (is_logged_in()) {
     exit;
 }
 
-// ---- Proses Login ----
+// Proses login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_csrf();
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Email dan password wajib diisi.";
     } else {
 
-        // ADMIN + SUPERADMIN
+        // Query admin
         if ($role === 'admin') {
             $user = db_fetch(
                 "SELECT * FROM users 
@@ -36,8 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ['email' => $email]
             );
         }
-
-        // USER BIASA
+        // Query user biasa
         else {
             $user = db_fetch(
                 "SELECT * FROM users
@@ -47,21 +46,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
 
-        // ---- Validasi Password ----
         if ($user && password_verify($pass, $user['password'])) {
-            
-            // Cek apakah akun sudah terverifikasi
+
             if (!$user['is_verified']) {
-                $error = "Akun Anda belum terverifikasi. Silakan cek email Anda.";
+                $error = "Akun Anda belum terverifikasi.";
             } else {
                 session_regenerate_id(true);
                 $_SESSION['user'] = $user;
 
-                if ($user['role'] === 'admin' || $user['role'] === 'superadmin') {
+                if ($user['role'] === 'admin' || $user['role'] === 'superadmin')
                     header("Location: {$BASE_URL}admin/dashboard.php");
-                } else {
+                else
                     header("Location: {$BASE_URL}");
-                }
+
                 exit;
             }
         }
@@ -70,44 +67,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---- UI ----
 include __DIR__ . '/partials/header.php';
 include __DIR__ . '/partials/navbar.php';
 ?>
 
-<h1>
-    <?= ($role === 'admin') ? 'Login Admin' : 'Login Pengguna'; ?>
-</h1>
+<div class="container py-5">
 
-<?php if ($error): ?>
-<div class="kb-alert kb-alert-error"><?= htmlspecialchars($error) ?></div>
-<?php endif; ?>
+    <div class="row justify-content-center">
 
-<form method="POST" class="kb-form">
-    <input type="hidden" name="role" value="<?= htmlspecialchars($role) ?>">
-    <?= csrf_field() ?>
+        <div class="col-md-5">
+            <div class="card shadow-lg p-4" style="border-radius:18px;">
 
-    <label>Email</label>
-    <input type="email" name="email" required>
+                <h2 class="fw-bold text-center mb-4" style="color:#8B5E34;">
+                    <?= ($role === 'admin') ? 'Login Admin' : 'Login Pengguna'; ?>
+                </h2>
 
-    <label>Password</label>
-    <input type="password" name="password" required>
+                <?php if ($error): ?>
+                    <div class="alert alert-danger text-center"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
 
-    <button class="kb-btn kb-btn-primary">Login</button>
-</form>
+                <form method="POST" class="mt-3">
 
-<?php if ($role === 'user'): ?>
-<p>
-    Belum punya akun?
-    <a href="<?= $BASE_URL ?>register.php">Daftar Sekarang</a>
-</p>
-<?php elseif ($role === 'admin'): ?>
-<p>
-    Belum punya akun admin?
-    <a href="<?= $BASE_URL ?>admin-register.php">Daftar Admin</a>
-</p>
-<?php endif; ?>
+                    <input type="hidden" name="role" value="<?= htmlspecialchars($role) ?>">
+                    <?= csrf_field() ?>
 
-<p><a href="login-select.php">← Kembali</a></p>
+                    <div class="mb-3">
+                        <label class="fw-semibold">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-semibold">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+
+                    <button class="btn btn-warning w-100 fw-bold mt-3">
+                        Login
+                    </button>
+                </form>
+
+                <!-- REGISTER LINK -->
+                <div class="text-center mt-4">
+                    <?php if ($role === 'user'): ?>
+                        Belum punya akun?
+                        <a href="<?= $BASE_URL ?>register.php" class="fw-bold" style="color:#8B5E34;">Daftar</a>
+                    <?php else: ?>
+                        Belum punya akun admin?
+                        <a href="<?= $BASE_URL ?>admin-register.php" class="fw-bold" style="color:#8B5E34;">Daftar Admin</a>
+                    <?php endif; ?>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="login-select.php" class="text-muted fw-semibold">← Kembali</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>

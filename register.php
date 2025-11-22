@@ -10,6 +10,7 @@ if (is_logged_in()) {
 $error = '';
 $success = '';
 
+// Proses submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_csrf();
 
@@ -31,14 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Konfirmasi password tidak cocok.";
     }
     else {
-
         // cek email sudah ada atau belum
         $cek = db_fetch("SELECT id FROM users WHERE email = :e", ['e' => $email]);
 
         if ($cek) {
             $error = "Email sudah digunakan.";
         } else {
-            // Auto verified untuk user biasa (tidak perlu verifikasi)
+
+            // Auto verified
             db_exec("
                 INSERT INTO users (name, email, password, role, is_verified, verified_at)
                 VALUES (:n, :e, :p, 'user', 1, NOW())
@@ -48,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'p' => password_hash($pass, PASSWORD_DEFAULT)
             ]);
 
-            // Auto login setelah register
+            // Auto login
             $user = db_fetch("SELECT * FROM users WHERE email = :e", ['e' => $email]);
             $_SESSION['user'] = $user;
 
@@ -62,34 +63,62 @@ include __DIR__ . '/partials/header.php';
 include __DIR__ . '/partials/navbar.php';
 ?>
 
-<h1>Daftar Akun</h1>
+<div class="container py-5">
 
-<?php if ($error): ?>
-<div class="kb-alert kb-alert-error"><?= htmlspecialchars($error) ?></div>
-<?php endif; ?>
+    <!-- CARD REGISTER -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-<form method="POST" class="kb-form">
+            <div class="card shadow-lg p-4" style="border-radius:18px;">
+                
+                <h2 class="fw-bold text-center mb-4" style="color:#8B5E34;">Daftar Akun Pengguna</h2>
 
-    <?= csrf_field() ?>
+                <?php if ($error): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
 
-    <label>Nama Lengkap</label>
-    <input type="text" name="name" required>
+                <form method="POST" class="mt-3">
 
-    <label>Email</label>
-    <input type="email" name="email" required>
+                    <?= csrf_field() ?>
 
-    <label>Password</label>
-    <input type="password" name="password" minlength="6" required>
+                    <div class="mb-3">
+                        <label class="fw-semibold">Nama Lengkap</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
 
-    <label>Konfirmasi Password</label>
-    <input type="password" name="password2" minlength="6" required>
+                    <div class="mb-3">
+                        <label class="fw-semibold">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
 
-    <button class="kb-btn kb-btn-primary">Daftar</button>
+                    <div class="mb-3">
+                        <label class="fw-semibold">Password</label>
+                        <input type="password" name="password" class="form-control" minlength="6" required>
+                    </div>
 
-</form>
+                    <div class="mb-3">
+                        <label class="fw-semibold">Konfirmasi Password</label>
+                        <input type="password" name="password2" class="form-control" minlength="6" required>
+                    </div>
 
-<p>
-    <a href="<?= $BASE_URL ?>login.php?role=user">← Kembali ke Login</a>
-</p>
+                    <button class="btn btn-warning w-100 fw-bold mt-3">
+                        Daftar
+                    </button>
+
+                </form>
+
+                <div class="text-center mt-3">
+                    Sudah punya akun?
+                    <a href="<?= $BASE_URL ?>login.php?role=user" class="fw-bold" style="color:#8B5E34;">
+                        Login Sekarang
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>

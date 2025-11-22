@@ -1,240 +1,258 @@
 /* ============================================
-   ADMIN LAYOUT
+   GLOBAL ADMIN THEME
 ============================================ */
-.kb-admin-wrap {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  min-height: 100vh;
-  background: #faf5ed;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .kb-admin-wrap {
-    grid-template-columns: 1fr;
-  }
-
-  .kb-admin-aside {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .kb-admin-menu {
-    flex-direction: row;
-    gap: 8px;
-  }
-
-  .kb-admin-link {
-    white-space: nowrap;
-  }
+body.admin-mode {
+    background: #f8f4ec;
+    font-family: "Inter", system-ui, sans-serif;
 }
 
 /* ============================================
-   SIDEBAR
+   LAYOUT GRID
+============================================ */
+.kb-admin-wrap {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .kb-admin-wrap {
+        grid-template-columns: 1fr;
+    }
+    .kb-admin-aside {
+        flex-direction: row;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 12px;
+    }
+}
+
+/* ============================================
+   SIDEBAR PREMIUM
 ============================================ */
 .kb-admin-aside {
-  background: #6b4a1e;
-  color: white;
-  padding: 25px 20px;
+    background: linear-gradient(180deg, #7a4d1d, #5b3412);
+    color: #fff;
+    padding: 25px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 3px 0 12px rgba(0,0,0,0.15);
 }
 
 .kb-admin-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 30px;
-  text-decoration: none;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 800;
+    font-size: 20px;
 }
 
 .kb-admin-logo {
-  height: 45px;
-  border-radius: 6px;
+    height: 42px;
+    border-radius: 12px;
 }
 
 .kb-admin-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .kb-admin-link {
-  padding: 12px;
-  border-radius: 10px;
-  color: white;
-  text-decoration: none;
-  background: rgba(255,255,255,0.05);
-  transition: 0.25s;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.25s;
+}
+
+.kb-admin-link i {
+    font-size: 1.2rem;
 }
 
 .kb-admin-link:hover {
-  background: rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.22);
+    transform: translateX(6px);
 }
 
 .kb-admin-link.active {
-  background: rgba(255,255,255,0.28);
-  font-weight: bold;
+    background: rgba(255,255,255,0.32);
+    font-weight: 700;
+    border-left: 4px solid #f2c567;
+    padding-left: 12px;
 }
 
 /* ============================================
    MAIN CONTENT
 ============================================ */
 .kb-admin-main {
-  padding: 35px;
+    padding: 35px 40px;
+    background: #fffdf8;
 }
 
-/* Admin Cards */
-.kb-admin-card {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  margin-bottom: 25px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+/* HEADLINE */
+.kb-admin-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #7a4d1d;
 }
 
-.kb-admin-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+.kb-muted {
+    color: #856c48;
+    margin-bottom: 20px;
 }
 
 /* ============================================
-   FORM & INPUT
+   DASHBOARD STAT CARDS
+============================================ */
+.admin-stat-card {
+    background: #fff7e6;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    border-left: 6px solid #e5a94f;
+    transition: 0.25s;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.admin-stat-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #7a4d1d;
+}
+
+.admin-stat-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #8B5E34;
+}
+
+/* ============================================
+   TABLE STYLING
+============================================ */
+.kb-admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.kb-admin-table tr {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.kb-admin-table th {
+    background: none;
+    color: #7a4d1d;
+    font-weight: 700;
+    padding: 12px;
+}
+
+.kb-admin-table td {
+    padding: 14px;
+}
+
+/* ============================================
+   FORM ELEMENTS
 ============================================ */
 .kb-admin-main input,
 .kb-admin-main select,
 .kb-admin-main textarea {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1.5px solid #c9b08a;
-  background: #fff;
-  margin-bottom: 18px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px solid #d8c2a3;
+    background: #fffdf7;
+    margin-bottom: 18px;
+    font-size: 15px;
+}
+
+.kb-admin-main input:focus,
+.kb-admin-main select:focus,
+.kb-admin-main textarea:focus {
+    border-color: #c7974a;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(199,151,74,0.25);
 }
 
 /* ============================================
-   BUTTONS ADMIN
+   BUTTONS
 ============================================ */
 .kb-admin-btn,
-.kb-btn-save,
-.kb-btn {
-  background: #6b4a1e;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 10px;
-  display: inline-block;
-  font-weight: 600;
-  text-decoration: none;
-  transition: .25s;
+.kb-btn-save {
+    background: #7a4d1d;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    transition: 0.25s;
 }
 
-.kb-admin-btn:hover,
-.kb-btn-save:hover {
-  background: #8c6a3c;
+.kb-admin-btn:hover {
+    background: #9b6c33;
 }
 
 .kb-btn-delete {
-  background: #b32828;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 10px;
-  text-decoration: none;
-  display: inline-block;
+    background: #cf2e2e;
+    padding: 10px 16px;
+    color: #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.25s;
 }
 
 .kb-btn-delete:hover {
-  background: #d64545;
+    background: #e04949;
 }
 
-/* Link-like button for inline forms (delete) */
-.kb-link-button {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  font: inherit;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.kb-link-button:hover {
-  color: #b32828;
-  text-decoration: underline;
-}
-
-/* Generic link style used across admin */
+/* small link button */
 .kb-link {
-  color: #6b4a1e;
-  text-decoration: none;
+    color: #7a4d1d;
+    font-weight: 700;
+    text-decoration: none;
+}
+.kb-link:hover { text-decoration: underline; color: #9b6c33; }
+
+/* danger link */
+.kb-link-danger { color: #cf2e2e; }
+.kb-link-danger:hover { color: #e04949; }
+
+/* ICON WRAPPER */
+.kb-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+.kb-badge {
+  padding: 4px 10px;
+  display: inline-block;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 600;
 }
-.kb-link:hover { color: #8c6a3c; text-decoration: underline; }
 
-/* Danger link (inline delete) */
-.kb-link-danger { color: #b32828; }
-.kb-link-danger:hover { color: #d64545; }
-
-/* Primary / Success buttons for admin forms */
-.kb-btn-primary {
-  background: #0077ff;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 0;
-  cursor: pointer;
-  font-weight: 700;
-}
-.kb-btn-primary:hover { filter: brightness(.95); }
-
-.kb-btn-success {
-  background: #28a745;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 0;
-  cursor: pointer;
-  font-weight: 700;
-}
-.kb-btn-success:hover { filter: brightness(.95); }
-
-/* Small icon helper used in inline buttons */
-.kb-icon {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  vertical-align: middle;
-}
-.kb-icon + span { margin-left: 6px; }
-
-/* ============================================
-   ADMIN TABLE
-============================================ */
-.kb-admin-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
+.kb-badge-brown {
+  background: #6b4a1e;
+  color: white;
 }
 
-.kb-admin-table tr {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.kb-admin-table td,
-.kb-admin-table th {
-  padding: 14px;
-  text-align: left;
-}
-
-.kb-admin-table th {
-  color: #6b4a1e;
-  font-weight: bold;
+.kb-badge-gold {
+  background: #d9b75a;
+  color: #3a2a0a;
 }

@@ -11,34 +11,59 @@ if (is_logged_in()) {
         exit;
     }
 
-    // Role user
     header("Location: {$BASE_URL}");
     exit;
 }
 
 include __DIR__ . '/partials/header.php';
+include __DIR__ . '/partials/navbar.php';
 ?>
 
+<div class="container py-5 text-center">
+
+    <h1 class="fw-bold mb-3" style="color:#8B5E34;">Pilih Jenis Login</h1>
+    <p class="text-muted mb-4">Silakan pilih tipe akun untuk melanjutkan ke halaman login.</p>
+
+    <div class="row justify-content-center g-4">
+
+        <!-- Login Admin -->
+        <div class="col-md-4">
+            <a href="<?= $BASE_URL ?>login.php?role=admin" 
+               class="text-decoration-none">
+                <div class="card shadow-lg p-4 h-100 hover-zoom"
+                     style="border-radius:16px;">
+                    <div class="fs-1 mb-3" style="color:#8B5E34;">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+                    <h4 class="fw-bold" style="color:#8B5E34;">Login Admin</h4>
+                    <p class="text-muted">Masuk sebagai admin atau superadmin.</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Login User -->
+        <div class="col-md-4">
+            <a href="<?= $BASE_URL ?>login.php?role=user" 
+               class="text-decoration-none">
+                <div class="card shadow-lg p-4 h-100 hover-zoom"
+                     style="border-radius:16px;">
+                    <div class="fs-1 mb-3" style="color:#8B5E34;">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <h4 class="fw-bold" style="color:#8B5E34;">Login Pengguna</h4>
+                    <p class="text-muted">Masuk sebagai pengguna biasa.</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
 <style>
-    .kb-login-choice {
-        display: flex;
-        gap: 20px;
-        margin-top: 30px;
+    .hover-zoom:hover {
+        transform: translateY(-6px);
+        transition: 0.3s;
     }
 </style>
-
-<h1>Pilih Jenis Login</h1>
-
-<div class="kb-login-choice">
-    <a class="kb-btn kb-btn-primary"
-       href="<?= $BASE_URL ?>login.php?role=admin">
-        Login Admin
-    </a>
-
-    <a class="kb-btn kb-btn-success"
-       href="<?= $BASE_URL ?>login.php?role=user">
-        Login Pengguna
-    </a>
-</div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
