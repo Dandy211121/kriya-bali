@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_admin();
 
-// Untuk memberikan class "active" pada menu
+// Menu aktif untuk highlight sidebar
 $active_menu = $GLOBALS['active_menu'] ?? '';
 ?>
 <!DOCTYPE html>
@@ -20,10 +20,9 @@ $active_menu = $GLOBALS['active_menu'] ?? '';
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- ADMIN CSS PREMIUM -->
+    <!-- Admin Panel CSS -->
     <link rel="stylesheet" href="<?= asset('public/css/admin.css') ?>">
 
-    <!-- favicon -->
     <link rel="icon" href="<?= asset('public/img/logo.png') ?>">
 </head>
 
@@ -33,50 +32,50 @@ $active_menu = $GLOBALS['active_menu'] ?? '';
 
     <!-- SIDEBAR -->
     <aside class="kb-admin-aside">
+
+        <!-- Brand -->
         <a href="<?= $BASE_URL ?>admin/dashboard.php" class="kb-admin-brand">
             <img src="<?= asset('public/img/logo.png') ?>" class="kb-admin-logo">
-            <span>Kriya Bali Admin</span>
+            <span class="kb-admin-brand-text">Kriya Bali Admin</span>
         </a>
 
+        <!-- MENU -->
         <nav class="kb-admin-menu">
 
-            <!-- Dashboard -->
-            <a href="<?= $BASE_URL ?>admin/dashboard.php" 
+            <a href="<?= $BASE_URL ?>admin/dashboard.php"
                class="kb-admin-link <?= ($active_menu === 'dashboard') ? 'active' : '' ?>">
                 <i class="bi bi-speedometer2"></i>
                 <span>Dashboard</span>
             </a>
 
-            <!-- Pengrajin -->
-            <a href="<?= $BASE_URL ?>admin/pengrajin-list.php" 
+            <a href="<?= $BASE_URL ?>admin/pengrajin-list.php"
                class="kb-admin-link <?= ($active_menu === 'pengrajin') ? 'active' : '' ?>">
                 <i class="bi bi-people"></i>
                 <span>Pengrajin</span>
             </a>
 
-            <!-- Kerajinan -->
-            <a href="<?= $BASE_URL ?>admin/kerajinan-list.php" 
+            <a href="<?= $BASE_URL ?>admin/kerajinan-list.php"
                class="kb-admin-link <?= ($active_menu === 'kerajinan') ? 'active' : '' ?>">
                 <i class="bi bi-basket"></i>
                 <span>Kerajinan</span>
             </a>
 
-            <!-- Hanya Superadmin -->
+            <!-- Menu khusus Superadmin -->
             <?php if (is_superadmin()): ?>
 
-                <a href="<?= $BASE_URL ?>admin/admin-register.php" 
+                <a href="<?= $BASE_URL ?>admin/admin-register.php"
                    class="kb-admin-link <?= ($active_menu === 'admin_register') ? 'active' : '' ?>">
                     <i class="bi bi-person-plus"></i>
                     <span>Tambah Admin</span>
                 </a>
 
-                <a href="<?= $BASE_URL ?>admin/settings.php" 
+                <a href="<?= $BASE_URL ?>admin/settings.php"
                    class="kb-admin-link <?= ($active_menu === 'settings') ? 'active' : '' ?>">
                     <i class="bi bi-gear"></i>
                     <span>Pengaturan Admin</span>
                 </a>
 
-                <a href="<?= $BASE_URL ?>admin/deletes-log.php" 
+                <a href="<?= $BASE_URL ?>admin/deletes-log.php"
                    class="kb-admin-link <?= ($active_menu === 'log') ? 'active' : '' ?>">
                     <i class="bi bi-trash"></i>
                     <span>Log Hapus</span>
@@ -84,8 +83,7 @@ $active_menu = $GLOBALS['active_menu'] ?? '';
 
             <?php endif; ?>
 
-            <!-- Logout -->
-            <a href="<?= $BASE_URL ?>logout.php" class="kb-admin-link">
+            <a href="<?= $BASE_URL ?>logout.php" class="kb-admin-link logout-link">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Logout</span>
             </a>
@@ -93,5 +91,6 @@ $active_menu = $GLOBALS['active_menu'] ?? '';
         </nav>
     </aside>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN CONTENT WRAPPER -->
     <main class="kb-admin-main">
+        <div class="kb-admin-content">

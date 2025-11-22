@@ -1,39 +1,40 @@
-$error = validate_image_upload($_FILES['image']);
-    if ($error !== null) {
-        redirect_with_msg("{$BASE_URL}admin/kerajinan-add.php", 'error', $error);
-    $folder = __DIR__ . "/../public/uploads/crafts/";
-    if (!is_dir($folder)) mkdir($folder, 0777, true);
+<?php
+require_once __DIR__ . '/../config/db.php';
+require_admin();
+require_csrf();
 
-    $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-    $newName = time() . "-" . rand(1000, 9999) . "." . $ext;
+$title = $_POST['title'];
+$artisan = $_POST['artisan_id'];
+$region = $_POST['region_id'];
+$category = $_POST['category_id'];
+$desc = $_POST['description'];
+$location = $_POST['location_addres'];
+$price = $_POST['price'];
 
-    $destination = $folder . $newName;
-
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $destination)) {
-        $image_path = "public/uploads/crafts/" . $newName;
-    } else {
-        redirect_with_msg("{$BASE_URL}admin/kerajinan-add.php", 'error', 'Gagal mengunggah gambar.');
-    }
-}
-=======
+$imagePath = null;
 
 if (!empty($_FILES['image']['name'])) {
-
-    $error = validate_image_upload($_FILES['image']);
-    if ($error !== null) {
-        redirect_with_msg("{$BASE_URL}admin/kerajinan-add.php", 'error', $error);
-    }
-    $folder = __DIR__ . "/../public/uploads/crafts/";
-    if (!is_dir($folder)) mkdir($folder, 0777, true);
-
-    $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-    $newName = time() . "-" . rand(1000, 9999) . "." . $ext;
-
-    $destination = $folder . $newName;
-
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $destination)) {
-        $image_path = "public/uploads/crafts/" . $newName;
-    } else {
-        redirect_with_msg("{$BASE_URL}admin/kerajinan-add.php", 'error', 'Gagal mengunggah gambar.');
-    }
+    $filename = time() . "-" . rand(1000,9999) . ".png";
+    $path = "public/uploads/crafts/" . $filename;
+    move_uploaded_file($_FILES['image']['tmp_name'], "../" . $path);
+    $imagePath = $path;
 }
+
+db_exec("
+    INSERT INTO crafts 
+    (title, artisan_id, region_id, category_id, description, location_addres, price, image_path, created_at)
+    VALUES
+    (:t, :a, :r, :c, :d, :l, :p, :img, NOW())
+", [
+    't' => $title,
+    'a' => $artisan,
+    'r' => $region,
+    'c' => $category,
+    'd' => $desc,
+    'l' => $location,
+    'p' => $price,
+    'img' => $imagePath
+]);
+
+header("Location: kerajinan-list.php");
+exit;

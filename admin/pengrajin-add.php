@@ -12,37 +12,34 @@ $regions = db_fetch_all("SELECT id, name FROM regions ORDER BY name");
 
 <div class="kb-admin-card">
 
-    <form method="POST" action="pengrajin-save.php" enctype="multipart/form-data">
-        <?= csrf_field() ?>
+<form method="POST" action="pengrajin-add-save.php" enctype="multipart/form-data">
+    <?= csrf_field() ?>
 
-        <label>Nama Pengrajin</label>
-        <input type="text" name="name" required>
+    <label>Nama Pengrajin</label>
+    <input type="text" name="name" required class="form-control">
 
-        <label>Daerah</label>
-        <select name="region_id" required>
-            <option value="">Pilih Daerah</option>
-            <?php foreach ($regions as $r): ?>
-                <option value="<?= $r['id'] ?>"><?= htmlspecialchars($r['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
+    <label>Daerah</label>
+    <select name="region_id" class="form-control" required>
+        <option value="">Pilih Daerah</option>
+        <?php foreach ($regions as $r): ?>
+        <option value="<?= $r['id'] ?>"><?= htmlspecialchars($r['name']) ?></option>
+        <?php endforeach ?>
+    </select>
 
-        <label>Deskripsi</label>
-        <textarea name="description" rows="4"></textarea>
+    <label>Deskripsi</label>
+    <textarea name="description" rows="4" class="form-control"></textarea>
 
-        <label>Foto Pengrajin</label>
-        <input type="file" name="image">
+    <label>Lokasi</label>
+    <input type="text" name="lokasi" class="form-control" placeholder="Contoh: Desa Mas, Ubud">
 
-        <div style="margin-top: 20px; display: flex; gap: 12px;">
-            <button class="kb-admin-btn">
-                <i class="bi bi-check-circle"></i> Simpan
-            </button>
+    <label class="mt-3">Foto Pengrajin</label>
+    <input type="file" name="image" class="form-control">
 
-            <a href="pengrajin-list.php" class="kb-btn-delete" style="text-decoration:none;">
-                <i class="bi bi-x-circle"></i> Batal
-            </a>
-        </div>
-
-    </form>
+    <div class="mt-4">
+        <button class="kb-admin-btn">Simpan</button>
+        <a href="pengrajin-list.php" class="kb-btn-delete">Batal</a>
+    </div>
+</form>
 
 </div>
 

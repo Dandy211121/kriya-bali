@@ -2,91 +2,77 @@
 require_once __DIR__ . '/../config/db.php';
 require_admin();
 
-$GLOBALS['active_menu'] = 'kerajinan';
+$id = intval($_GET['id']);
+$data = db_fetch("SELECT * FROM crafts WHERE id = :id", ['id' => $id]);
 
-$id = intval($_GET['id'] ?? 0);
-
-$data = db_fetch("
-    SELECT * FROM crafts WHERE id = :id
-", ['id' => $id]);
-
-if (!$data) {
-    die("<p>Kerajinan tidak ditemukan.</p>");
-}
-
-$regions    = db_fetch_all("SELECT id, name FROM regions ORDER BY name");
-$categories = db_fetch_all("SELECT id, name FROM craft_categories ORDER BY name");
-$artisans   = db_fetch_all("SELECT id, name FROM artisans ORDER BY name");
+$regions = db_fetch_all("SELECT * FROM regions ORDER BY name");
+$artisans = db_fetch_all("SELECT * FROM artisans ORDER BY name");
+$categories = db_fetch_all("SELECT * FROM craft_categories ORDER BY name");
 
 require_once __DIR__ . '/_layout_start.php';
 ?>
 
 <h1 class="kb-admin-title">Edit Kerajinan</h1>
 
-<div class="kb-admin-card">
+<form method="POST" action="kerajinan-edit-save.php" enctype="multipart/form-data">
+    <?= csrf_field() ?>
+    <input type="hidden" name="id" value="<?= $data['id'] ?>">
 
-    <form method="POST" action="kerajinan-edit-save.php" enctype="multipart/form-data">
-        
-        <?= csrf_field() ?>
-        <input type="hidden" name="id" value="<?= $data['id'] ?>">
+    <div class="mb-3">
+        <label>Judul</label>
+        <input class="form-control" name="title" value="<?= htmlspecialchars($data['title']) ?>">
+    </div>
 
-        <label>Judul Kerajinan</label>
-        <input type="text" name="title" value="<?= htmlspecialchars($data['title']) ?>" required>
-
-        <label>Daerah</label>
-        <select name="region_id" required>
-            <?php foreach ($regions as $r): ?>
-                <option value="<?= $r['id'] ?>" <?= $r['id'] == $data['region_id'] ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($r['name']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-
-        <label>Kategori Kerajinan</label>
-        <select name="category_id" required>
-            <?php foreach ($categories as $c): ?>
-                <option value="<?= $c['id'] ?>" <?= $c['id'] == $data['category_id'] ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($c['name']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-
+    <div class="mb-3">
         <label>Pengrajin</label>
-        <select name="artisan_id" required>
+        <select name="artisan_id" class="form-select">
             <?php foreach ($artisans as $a): ?>
-                <option value="<?= $a['id'] ?>" <?= $a['id'] == $data['artisan_id'] ? 'selected' : '' ?>>
+                <option value="<?= $a['id'] ?>" <?= $a['id']==$data['artisan_id']?"selected":"" ?>>
                     <?= htmlspecialchars($a['name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
+    </div>
 
-        <label>Harga</label>
-        <input type="number" name="price" value="<?= $data['price'] ?>" required>
+    <div class="mb-3">
+        <label>Daerah</label>
+        <select name="region_id" class="form-select">
+            <?php foreach ($regions as $r): ?>
+                <option value="<?= $r['id'] ?>" <?= $r['id']==$data['region_id']?"selected":"" ?>>
+                    <?= htmlspecialchars($r['name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
+    <div class="mb-3">
+        <label>Kategori</label>
+        <select name="category_id" class="form-select">
+            <?php foreach ($categories as $c): ?>
+                <option value="<?= $c['id'] ?>" <?= $c['id']==$data['category_id']?"selected":"" ?>>
+                    <?= htmlspecialchars($c['name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Lokasi Toko</label>
+        <input class="form-control" name="location_address"
+               value="<?= htmlspecialchars($data['location_address']) ?>">
+    </div>
+
+    <div class="mb-3">
         <label>Deskripsi</label>
-        <textarea name="description" rows="4"><?= htmlspecialchars($data['description']) ?></textarea>
+        <textarea name="description" class="form-control"><?= htmlspecialchars($data['description']) ?></textarea>
+    </div>
 
-        <label>Foto Kerajinan (opsional)</label>
-        <input type="file" name="image">
+    <div class="mb-3">
+        <label>Harga</label>
+        <input class="form-control" name="price" value="<?= $data['price'] ?>">
+    </div>
 
-        <?php if ($data['image_path']): ?>
-            <p>Foto Lama:</p>
-            <img src="<?= asset($data['image_path']) ?>"
-                 style="width:120px; border-radius:10px; margin-bottom:12px;">
-        <?php endif; ?>
-
-        <div style="margin-top:20px; display:flex; gap:12px;">
-            <button class="kb-admin-btn">
-                <i class="bi bi-save"></i> Update
-            </button>
-
-            <a href="kerajinan-list.php" class="kb-btn-delete">
-                <i class="bi bi-x-circle"></i> Batal
-            </a>
-        </div>
-
-    </form>
-
-</div>
+    <button class="kb-admin-btn">Simpan</button>
+</form>
 
 <?php require_once __DIR__ . '/_layout_end.php'; ?>

@@ -9,7 +9,7 @@ $region = $_GET['region'] ?? '';
 // Ambil dropdown daerah
 $regions = db_fetch_all("SELECT id, name FROM regions ORDER BY name");
 
-// Base SQL (TIDAK ADA kategori di pengrajin)
+// Base SQL
 $sql = "
     SELECT a.*, 
            r.name AS region_name
@@ -82,7 +82,20 @@ $rows = db_fetch_all($sql, $params);
         <div class="col">
             <div class="card shadow-sm h-100">
 
+                <!-- Foto Pengrajin -->
+                <?php if (!empty($row['photo_path'])): ?>
+                    <img src="<?= asset($row['photo_path']) ?>" 
+                         class="card-img-top"
+                         style="height:200px; object-fit:cover; border-radius:14px 14px 0 0;">
+                <?php else: ?>
+                    <div class="bg-secondary text-white p-4 text-center rounded-top"
+                         style="height:200px;">
+                        Tidak ada foto
+                    </div>
+                <?php endif; ?>
+
                 <div class="card-body">
+
                     <h5 class="card-title fw-bold" style="color:#8B5E34;">
                         <?= htmlspecialchars($row['name']) ?>
                     </h5>
@@ -91,9 +104,9 @@ $rows = db_fetch_all($sql, $params);
                         📍 <?= htmlspecialchars($row['region_name']) ?>
                     </p>
 
-                    <a href="<?= $BASE_URL ?>kerajinan.php?artisan=<?= $row['id'] ?>"
+                    <a href="<?= $BASE_URL ?>pengrajin-detail.php?id=<?= $row['id'] ?>"
                        class="btn btn-outline-warning fw-bold mt-3 rounded-pill">
-                        Lihat Kerajinan →
+                        Lihat Pengrajin →
                     </a>
                 </div>
 

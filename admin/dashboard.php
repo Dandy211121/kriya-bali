@@ -2,66 +2,56 @@
 require_once __DIR__ . '/../config/db.php';
 require_admin();
 
-// Aktifkan menu
 $GLOBALS['active_menu'] = 'dashboard';
-
 require_once __DIR__ . '/_layout_start.php';
 
-// Ambil data statistik
-$total_artisans   = db_fetch("SELECT COUNT(*) AS total FROM artisans")['total'] ?? 0;
-$total_crafts     = db_fetch("SELECT COUNT(*) AS total FROM crafts")['total'] ?? 0;
-$total_categories = db_fetch("SELECT COUNT(*) AS total FROM craft_categories")['total'] ?? 0;
+// Hitung total data
+$total_pengrajin = db_fetch("SELECT COUNT(*) AS total FROM artisans")['total'];
+$total_kerajinan = db_fetch("SELECT COUNT(*) AS total FROM crafts")['total'];
+$total_kategori  = db_fetch("SELECT COUNT(*) AS total FROM craft_categories")['total'];
 ?>
-    
+
 <h1 class="kb-admin-title">Dashboard Admin</h1>
-<p class="kb-muted">Selamat datang kembali, <b><?= htmlspecialchars($_SESSION['user']['name']) ?></b>.</p>
 
-<!-- GRID CARDS -->
-<div class="kb-admin-grid">
+<p class="kb-muted">
+    Selamat datang kembali, <b><?= htmlspecialchars($_SESSION['user']['name']) ?></b>.
+</p>
 
-    <!-- Total Pengrajin -->
-    <div class="admin-stat-card">
-        <div class="admin-stat-title">
-            <i class="bi bi-people-fill" style="font-size:1.5rem; margin-right:6px;"></i>
-            Total Pengrajin
+<!-- STATISTICS CARDS IN FULL WIDTH STYLE -->
+<div class="kb-dashboard-stats">
+
+    <div class="kb-stat-card">
+        <div class="kb-stat-icon"><i class="bi bi-people"></i></div>
+        <div class="kb-stat-info">
+            <div class="kb-stat-label">Total Pengrajin</div>
+            <div class="kb-stat-number"><?= $total_pengrajin ?></div>
         </div>
-        <div class="admin-stat-number"><?= $total_artisans ?></div>
     </div>
 
-    <!-- Total Kerajinan -->
-    <div class="admin-stat-card">
-        <div class="admin-stat-title">
-            <i class="bi bi-basket-fill" style="font-size:1.5rem; margin-right:6px;"></i>
-            Total Kerajinan
+    <div class="kb-stat-card">
+        <div class="kb-stat-icon"><i class="bi bi-basket"></i></div>
+        <div class="kb-stat-info">
+            <div class="kb-stat-label">Total Kerajinan</div>
+            <div class="kb-stat-number"><?= $total_kerajinan ?></div>
         </div>
-        <div class="admin-stat-number"><?= $total_crafts ?></div>
     </div>
 
-    <!-- Total Kategori -->
-    <div class="admin-stat-card">
-        <div class="admin-stat-title">
-            <i class="bi bi-tags-fill" style="font-size:1.5rem; margin-right:6px;"></i>
-            Total Kategori
+    <div class="kb-stat-card">
+        <div class="kb-stat-icon"><i class="bi bi-tags"></i></div>
+        <div class="kb-stat-info">
+            <div class="kb-stat-label">Total Kategori</div>
+            <div class="kb-stat-number"><?= $total_kategori ?></div>
         </div>
-        <div class="admin-stat-number"><?= $total_categories ?></div>
     </div>
 
 </div>
 
-<!-- SPACE UNTUK FEATURE KE DEPAN -->
-<div style="margin-top:40px;">
-    <h2 class="kb-admin-title" style="font-size:1.5rem;">Aktivitas Terbaru</h2>
-    <p class="kb-muted">Fitur ini bisa digunakan untuk menampilkan log data terbaru atau grafik statistik.</p>
+<h2 class="kb-section-title">Aktivitas Terbaru</h2>
 
-    <div style="
-        background:white;
-        padding:25px;
-        border-radius:18px;
-        box-shadow:0 4px 14px rgba(0,0,0,0.07);
-        text-align:center;
-        color:#9b7c57;">
-        <i class="bi bi-graph-up" style="font-size:2.5rem; opacity:0.5;"></i>
-        <p style="margin-top:12px;">Belum ada data aktivitas. Fitur ini dapat dikembangkan menjadi grafik statistik.</p>
+<div class="kb-activity-box">
+    <div class="kb-activity-empty">
+        <i class="bi bi-graph-up"></i>
+        <p>Belum ada data aktivitas. Fitur ini dapat dikembangkan menjadi grafik statistik.</p>
     </div>
 </div>
 

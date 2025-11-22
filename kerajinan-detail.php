@@ -26,6 +26,9 @@ if (!$data) {
     require_once __DIR__ . '/partials/footer.php';
     exit;
 }
+
+// FIX: Samakan nama kolom lokasi toko
+$lokasi_toko = $data['location_address'] ?? null;
 ?>
 
 <div class="container py-5">
@@ -53,6 +56,7 @@ if (!$data) {
         <!-- RIGHT: DETAIL INFO -->
         <div class="col-md-7">
 
+            <!-- Badge kategori dan daerah -->
             <div class="mb-3">
                 <span class="badge bg-warning text-dark fw-bold px-3 py-2 mb-2">
                     <?= htmlspecialchars($data['category_name'] ?? 'Tidak ada kategori') ?>
@@ -63,6 +67,7 @@ if (!$data) {
                 </span>
             </div>
 
+            <!-- Pengrajin -->
             <p class="fs-5">
                 <b>Pengrajin:</b>  
                 <span style="color:#8B5E34;">
@@ -70,6 +75,7 @@ if (!$data) {
                 </span>
             </p>
 
+            <!-- Harga -->
             <p class="fs-5">
                 <b>Harga:</b>  
                 <span class="fw-bold" style="color:#B8863B;">
@@ -77,6 +83,15 @@ if (!$data) {
                 </span>
             </p>
 
+            <!-- Lokasi Toko -->
+            <p class="fs-5 mt-3">
+                <b>Lokasi Toko:</b><br>
+                <span style="color:#5a4630;">
+                    <?= $lokasi_toko ? htmlspecialchars($lokasi_toko) : 'Tidak ada lokasi toko.' ?>
+                </span>
+            </p>
+
+            <!-- Deskripsi -->
             <?php if ($data['description']): ?>
             <div class="mt-4">
                 <b class="d-block mb-2">Deskripsi Kerajinan:</b>
@@ -87,15 +102,14 @@ if (!$data) {
             </div>
             <?php endif; ?>
 
+            <!-- Aksi -->
             <div class="mt-4 d-flex gap-3">
 
-                <!-- Tombol Kembali -->
                 <a href="<?= $BASE_URL ?>kerajinan.php" 
                    class="btn btn-outline-warning fw-bold px-4 rounded-pill">
                     ← Kembali
                 </a>
 
-                <!-- Tombol Lihat Pengrajin -->
                 <?php if ($data['artisan_id']): ?>
                 <a href="<?= $BASE_URL ?>pengrajin-detail.php?id=<?= $data['artisan_id'] ?>"
                    class="btn btn-warning fw-bold px-4 rounded-pill">
