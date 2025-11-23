@@ -142,3 +142,58 @@ footer {
     margin-bottom: 10px;
 }
 
+/* Animasi Icon Kartu Kriya Bali */
+.kb-icon {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efek membal halus */
+    cursor: default;
+}
+
+/* Saat kartu di-hover, icon akan membesar & miring sedikit */
+.card:hover .kb-icon {
+    transform: scale(1.3) rotate(10deg);
+}
+
+/* Style Khusus Tombol Hero Kriya Bali */
+.btn-gold-premium {
+    background: linear-gradient(135deg, #D4A15A 0%, #F3C677 100%); /* Gradasi Emas */
+    color: #5A3E1B !important; /* Teks Coklat Tua */
+    border: none;
+    padding: 14px 40px;      /* Padding luas agar terlihat mahal */
+    font-size: 1rem;
+    font-weight: 700;        /* Tebal */
+    letter-spacing: 0.5px;   /* Jarak antar huruf */
+    border-radius: 50px;     /* Pill shape */
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;               /* Jarak ikon dan teks */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasi halus */
+    box-shadow: 0 8px 20px rgba(212, 161, 90, 0.4); /* Bayangan emas */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efek Kilauan (Shine) saat Hover */
+.btn-gold-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.5s;
+}
+
+.btn-gold-premium:hover::before {
+    left: 100%; /* Kilauan bergerak dari kiri ke kanan */
+}
+
+/* Efek Hover Tombol */
+.btn-gold-premium:hover {
+    transform: translateY(-5px); /* Naik sedikit */
+    box-shadow: 0 15px 30px rgba(212, 161, 90, 0.6); /* Bayangan menebal */
+    color: #3E2B12 !important;
+}

@@ -40,7 +40,7 @@
              class="mb-3 shadow-lg" 
              style="width: 140px; height: 140px; border-radius: 25%; border: 3px solid #fff; object-fit: cover;">
 
-        <h1 class="fw-bold display-5" style="font-family: 'Playfair Display', serif;">
+        <h1 class="fw-bold display-5">
             Selamat Datang di Kriya Bali
         </h1>
         
@@ -49,8 +49,8 @@
         </p>
 
         <?php if (!isset($_SESSION['user'])): ?>
-            <a href="register.php" class="btn btn-warning btn-lg mt-3 fw-bold px-4 rounded-pill shadow">
-                Gabung Sekarang
+            <a href="register.php" class="btn-gold-premium mt-4">
+                Gabung Sekarang <i class="bi bi-arrow-right"></i>
             </a>
         <?php endif; ?>
     </div>
@@ -80,9 +80,9 @@
         <!-- Pengrajin -->
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius: 18px;">
-                <div class="fs-1 mb-3" style="color:#8B5E34;">👩‍🎨</div>
+                <div class="fs-1 mb-3 kb-icon" style="color:#8B5E34;">👩‍🎨</div>
                 <h4 class="fw-bold" style="color:#8B5E34;">Data Pengrajin</h4>
-                <p class="text-muted">
+                <p class="lead mx-auto">
                     Temukan profil lengkap para pengrajin berbakat dari berbagai daerah di Bali.
                 </p>
                 <a href="pengrajin.php" class="btn btn-outline-warning fw-bold px-4 rounded-pill mt-auto">
@@ -94,9 +94,9 @@
         <!-- Kerajinan -->
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius: 18px;">
-                <div class="fs-1 mb-3" style="color:#8B5E34;">🏺</div>
+                <div class="fs-1 mb-3 kb-icon" style="color:#8B5E34;">🏺</div>
                 <h4 class="fw-bold" style="color:#8B5E34;">Galeri Kerajinan</h4>
-                <p class="text-muted">
+                <p class="lead mx-auto">
                     Jelajahi koleksi karya seni mulai dari ukiran, anyaman, hingga lukisan.
                 </p>
                 <a href="kerajinan.php" class="btn btn-outline-warning fw-bold px-4 rounded-pill mt-auto">
@@ -108,9 +108,9 @@
         <!-- Tentang -->
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius: 18px;">
-                <div class="fs-1 mb-3" style="color:#8B5E34;">ℹ️</div>
+                <div class="fs-1 mb-3 kb-icon" style="color:#8B5E34;">ℹ️</div>
                 <h4 class="fw-bold" style="color:#8B5E34;">Tentang Kami</h4>
-                <p class="text-muted">
+                <p class="lead mx-auto">
                     Ketahui visi misi kami dalam melestarikan budaya Bali melalui teknologi.
                 </p>
                 <a href="tentang.php" class="btn btn-outline-warning fw-bold px-4 rounded-pill mt-auto">
