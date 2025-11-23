@@ -6,44 +6,50 @@
 ================================= -->
 <section class="position-relative overflow-hidden" style="height: 520px;">
     
-    <!-- Slide Background -->
     <div id="heroSlides" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
         <div class="carousel-inner h-100">
 
             <div class="carousel-item active h-100">
-                <div class="bg-cover h-100" style="background-image: url('public/img/hero1.jpg');"></div>
+                <div class="h-100 w-100" 
+                     style="background: url('public/img/hero1.jpg') no-repeat center center; background-size: cover;">
+                </div>
             </div>
 
             <div class="carousel-item h-100">
-                <div class="bg-cover h-100" style="background-image: url('public/img/hero2.jpg');"></div>
+                <div class="h-100 w-100" 
+                     style="background: url('public/img/hero2.jpg') no-repeat center center; background-size: cover;">
+                </div>
             </div>
 
             <div class="carousel-item h-100">
-                <div class="bg-cover h-100" style="background-image: url('public/img/hero3.png');"></div>
+                <div class="h-100 w-100" 
+                     style="background: url('public/img/hero3.png') no-repeat center center; background-size: cover;">
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Hero Overlay -->
     <div class="position-absolute top-0 start-0 w-100 h-100" 
          style="background: rgba(0,0,0,0.55); z-index: 2;"></div>
 
-    <!-- Hero Content -->
-    <div class="position-absolute w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center text-light px-3" 
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center text-light px-3" 
          style="z-index: 3;">
         
         <img src="public/img/logo.png" 
              class="mb-3 shadow-lg" 
-             style="width: 140px; height: 140px; border-radius: 25%; border: 3px solid #fff;">
+             style="width: 140px; height: 140px; border-radius: 25%; border: 3px solid #fff; object-fit: cover;">
 
-        <h1 class="fw-bold display-5">Selamat Datang di Kriya Bali</h1>
-        <p class="lead mt-2" style="max-width: 650px;">
+        <h1 class="fw-bold display-5" style="font-family: 'Playfair Display', serif;">
+            Selamat Datang di Kriya Bali
+        </h1>
+        
+        <p class="lead mt-2" style="max-width: 650px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
             Platform digital yang didedikasikan untuk melestarikan dan mempromosikan keindahan karya tangan pengrajin Bali ke panggung dunia.
         </p>
 
         <?php if (!isset($_SESSION['user'])): ?>
-            <a href="register.php" class="btn btn-warning btn-lg mt-3 fw-bold px-4">
+            <a href="register.php" class="btn btn-warning btn-lg mt-3 fw-bold px-4 rounded-pill shadow">
                 Gabung Sekarang
             </a>
         <?php endif; ?>
