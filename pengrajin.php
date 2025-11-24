@@ -36,11 +36,11 @@ $rows = db_fetch_all($sql, $params);
 ?>
 
 <style>
-    /* STYLE FLAT DESIGN */
+    /* STYLE FLAT DESIGN UNTUK FILTER */
     .filter-section {
         background-color: #FFFCF9;
         border: 1px solid #E5DCC5;
-        border-radius: 12px;
+        border-radius: 18px;
         padding: 25px;
         margin-bottom: 40px;
     }
@@ -71,29 +71,43 @@ $rows = db_fetch_all($sql, $params);
         z-index: 5;
     }
 
-    /* Kartu Pengrajin */
+    /* KARTU PENGRAJIN MODERN */
     .artisan-card {
-        border: 1px solid #eee;
-        border-radius: 12px;
-        transition: transform 0.2s;
+        border: none;
+        border-radius: 18px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         background: white;
+        position: relative; /* Penting untuk stretched-link */
+        cursor: pointer;    /* Mengubah kursor jadi tangan saat disorot */
     }
+    
+    /* Efek Hover: Kartu naik & bayangan menebal */
     .artisan-card:hover {
-        border-color: #D4A15A;
-        transform: translateY(-5px);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(139, 94, 52, 0.15) !important;
     }
+
+    /* Efek Hover: Tombol berubah warna saat kartu disorot */
+    .artisan-card:hover .btn-action {
+        background-color: #ffc107;
+        color: #000;
+        border-color: #ffc107;
+    }
+
     .artisan-img-wrapper {
-        height: 240px; /* Sedikit lebih tinggi untuk foto orang */
+        height: 240px;
         overflow: hidden;
         position: relative;
-        border-radius: 12px 12px 0 0;
+        border-radius: 18px 18px 0 0;
     }
+    
     .artisan-img-wrapper img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.5s;
     }
+    
     .artisan-card:hover .artisan-img-wrapper img {
         transform: scale(1.05);
     }
@@ -101,26 +115,28 @@ $rows = db_fetch_all($sql, $params);
     /* Badge Daerah */
     .badge-overlay {
         position: absolute;
-        top: 10px;
-        left: 10px;
+        top: 12px;
+        left: 12px;
         background: rgba(255, 255, 255, 0.95);
         padding: 5px 12px;
         border-radius: 20px;
         font-size: 0.75rem;
         font-weight: 600;
-        color: #5A3E1B;
+        color: #8B5E34;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 2; /* Di atas stretched link */
+        position: relative; /* Agar badge tetap bisa diklik terpisah jika perlu */
     }
 </style>
 
 <div class="container py-5">
 
     <div class="text-center mb-5">
-        <h1 class="fw-bold display-5" style="color:#8B5E34;">
+        <h2 class="fw-bold" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
             Daftar Pengrajin
-        </h1>
-        <div class="mx-auto my-3" style="width: 60px; height: 3px; background: #D4A15A;"></div>
-        <p class="lead mx-auto">Profil seniman dan pengrajin berbakat dari seluruh Bali.</p>
+        </h2>
+        <div class="mx-auto mt-2" style="width:90px; height:5px; background:#D4A15A; border-radius:10px;"></div>
+        <p class="text-muted mt-3">Profil seniman dan pengrajin berbakat dari seluruh Bali.</p>
     </div>
 
     <div class="filter-section">
@@ -173,11 +189,11 @@ $rows = db_fetch_all($sql, $params);
 
         <?php foreach ($rows as $row): ?>
         <div class="col">
-            <div class="card h-100 artisan-card shadow-none">
+            <div class="card border-0 shadow-sm h-100 artisan-card">
 
                 <div class="artisan-img-wrapper">
                     <span class="badge-overlay">
-                        <i class="bi bi-geo-alt me-1"></i>
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
                         <?= htmlspecialchars($row['region_name']) ?>
                     </span>
 
@@ -190,20 +206,20 @@ $rows = db_fetch_all($sql, $params);
                     <?php endif; ?>
                 </div>
 
-                <div class="card-body d-flex flex-column">
-
-                    <h5 class="card-title fw-bold mb-1" style="color:#5A3E1B; font-family: 'Playfair Display', serif;">
+                <div class="card-body d-flex flex-column p-4 text-center">
+                    
+                    <h4 class="fw-bold mb-2" style="color:#8B5E34;">
                         <?= htmlspecialchars($row['name']) ?>
-                    </h5>
+                    </h4>
 
-                    <p class="text-muted small mb-3">
+                    <p class="text-muted small mb-4">
                         <?= !empty($row['lokasi']) ? htmlspecialchars($row['lokasi']) : 'Lokasi tidak tersedia' ?>
                     </p>
 
-                    <div class="mt-auto border-top pt-3 text-end">
+                    <div class="mt-auto">
                         <a href="<?= $BASE_URL ?>pengrajin-detail.php?id=<?= $row['id'] ?>"
-                           class="btn btn-outline-warning btn-sm rounded-pill px-4 fw-bold">
-                            Lihat Profil <i class="bi bi-arrow-right ms-1"></i>
+                           class="btn btn-outline-warning fw-bold px-4 rounded-pill w-100 btn-action stretched-link">
+                            Lihat Profil
                         </a>
                     </div>
                 </div>
@@ -217,9 +233,9 @@ $rows = db_fetch_all($sql, $params);
     <?php else: ?>
         <div class="text-center py-5">
             <i class="bi bi-person-x display-1 text-muted opacity-25"></i>
-            <h3 class="fw-bold mt-3" style="color:#78350f;">Tidak Ada Pengrajin</h3>
+            <h3 class="fw-bold mt-3" style="color:#8B5E34;">Tidak Ada Pengrajin</h3>
             <p class="text-muted">Coba cari dengan kata kunci lain.</p>
-            <a href="pengrajin.php" class="btn btn-outline-warning rounded-pill mt-2">Reset Filter</a>
+            <a href="pengrajin.php" class="btn btn-outline-warning rounded-pill mt-2 fw-bold">Reset Filter</a>
         </div>
     <?php endif; ?>
 

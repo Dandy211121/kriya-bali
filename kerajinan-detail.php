@@ -49,6 +49,21 @@ $lokasi_toko = $data['location_address'] ?? null;
 ?>
 
 <style>
+    /* Styling Link Kembali */
+    .btn-back-link {
+        color: #6c757d;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .btn-back-link:hover {
+        color: #8B5E34;
+        transform: translateX(-5px); /* Efek geser kiri sedikit */
+    }
+
     /* Styling Bintang */
     .star-gold { color: #FFC107; }
     .star-grey { color: #e4e5e9; }
@@ -84,6 +99,12 @@ $lokasi_toko = $data['location_address'] ?? null;
 </style>
 
 <div class="container py-5">
+
+    <div class="mb-4">
+        <a href="kerajinan.php" class="btn-back-link">
+            <i class="bi bi-arrow-left"></i> Kembali ke Galeri
+        </a>
+    </div>
 
     <div class="text-center mb-4">
         <h1 class="fw-bold mb-2" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
@@ -131,10 +152,20 @@ $lokasi_toko = $data['location_address'] ?? null;
             </div>
 
             <div class="mb-5">
-                <h4 class="fw-bold" style="color:#8B5E34;">Deskripsi</h4>
-                <p class="text-muted" style="line-height: 1.8;">
-                    <?= nl2br(htmlspecialchars($data['description'] ?? 'Belum ada deskripsi.')) ?>
-                </p>
+                <h4 class="fw-bold mb-3" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
+                    Deskripsi Kerajinan
+                </h4>
+
+                <?php if (!empty($data['description'])): ?>
+                    <div class="p-4" 
+                         style="background-color: #fff; border: 1px solid #eee; border-radius: 12px; color: #555; line-height: 1.8; text-align: justify;">
+                        <?= nl2br(htmlspecialchars($data['description'])) ?>
+                    </div>
+                <?php else: ?>
+                    <div class="p-3 text-muted fst-italic border rounded" style="background: #f8f9fa;">
+                        <i class="bi bi-info-circle me-1"></i> Belum ada deskripsi yang ditambahkan untuk item ini.
+                    </div>
+                <?php endif; ?>
             </div>
 
             <hr class="my-5" style="border-top: 2px dashed #D4A15A;">
@@ -183,21 +214,44 @@ $lokasi_toko = $data['location_address'] ?? null;
 
             <?php if ($reviews): ?>
                 <?php foreach ($reviews as $rev): ?>
-                    <div class="review-card">
+                    <div class="review-card position-relative">
+                        
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h6 class="fw-bold mb-0 text-dark"><?= htmlspecialchars($rev['user_name']) ?></h6>
-                                <small class="text-muted"><?= date('d M Y', strtotime($rev['created_at'])) ?></small>
+                                <h6 class="fw-bold mb-0 text-dark">
+                                    <?= htmlspecialchars($rev['user_name']) ?>
+                                    
+                                    <?php if (isset($_SESSION['user']) && $_SESSION['user']['id'] == $rev['user_id']): ?>
+                                        <span class="badge bg-light text-secondary border ms-2" style="font-size: 0.7rem;">Anda</span>
+                                    <?php endif; ?>
+                                </h6>
+                                <small class="text-muted" style="font-size: 0.8rem;">
+                                    <?= date('d M Y, H:i', strtotime($rev['created_at'])) ?>
+                                </small>
                             </div>
+
                             <div class="text-warning">
                                 <?php for($i=1; $i<=5; $i++): ?>
                                     <?= ($i <= $rev['rating']) ? '<i class="bi bi-star-fill"></i>' : '<i class="bi bi-star"></i>' ?>
                                 <?php endfor; ?>
                             </div>
                         </div>
-                        <p class="mt-3 mb-0 text-secondary">
-                            <?= nl2br(htmlspecialchars($rev['comment'])) ?>
-                        </p>
+
+                        <p class="mt-3 mb-0 text-secondary" style="white-space: pre-wrap;"><?= htmlspecialchars($rev['comment']) ?></p>
+
+                        <?php if (isset($_SESSION['user']) && $_SESSION['user']['id'] == $rev['user_id']): ?>
+                            <div class="position-absolute bottom-0 end-0 p-3">
+                                <form action="kerajinan-review-delete.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus ulasan ini?');">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="review_id" value="<?= $rev['id'] ?>">
+                                    
+                                    <button type="submit" class="btn btn-sm text-danger border-0 p-0" title="Hapus Ulasan">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
