@@ -37,6 +37,9 @@ $rows = db_fetch_all("
             <th class="kb-col-category">Kategori</th>
             <th class="kb-col-artisan">Pengrajin</th>
             <th class="kb-col-location">Lokasi Toko</th>
+            
+            <th style="width: 200px;">Deskripsi</th> 
+            
             <th class="kb-col-price">Harga</th>
             <th class="kb-col-action">Aksi</th>
         </tr>
@@ -46,7 +49,6 @@ $rows = db_fetch_all("
         <?php foreach ($rows as $r): ?>
         <tr>
 
-            <!-- GAMBAR -->
             <td>
                 <?php if ($r['image_path']): ?>
                     <img src="<?= asset($r['image_path']); ?>" class="kb-admin-thumb">
@@ -57,48 +59,52 @@ $rows = db_fetch_all("
                 <?php endif; ?>
             </td>
 
-            <!-- JUDUL -->
             <td><?= htmlspecialchars($r['title']) ?></td>
 
-            <!-- DAERAH -->
             <td><?= htmlspecialchars($r['region_name'] ?? '-') ?></td>
 
-            <!-- KATEGORI -->
             <td><?= htmlspecialchars($r['category_name'] ?? '-') ?></td>
 
-            <!-- PENGRAJIN -->
             <td><?= htmlspecialchars($r['artisan_name'] ?? '-') ?></td>
 
-            <!-- LOKASI TOKO — FIXED -->
             <td>
                 <?= !empty($r['location_address']) 
                     ? htmlspecialchars($r['location_address']) 
                     : "<span class='text-muted'>-</span>" ?>
             </td>
 
-            <!-- HARGA -->
+            <td>
+                <?php 
+                    $desc = $r['description'] ?? '';
+                    // Jika lebih dari 50 karakter, potong dan tambah '...'
+                    if (strlen($desc) > 50) {
+                        echo htmlspecialchars(substr($desc, 0, 50)) . '...';
+                    } else {
+                        echo htmlspecialchars($desc ?: '-');
+                    }
+                ?>
+            </td>
+
             <td>Rp <?= number_format($r['price'], 0, ',', '.') ?></td>
 
-            <!-- AKSI -->
             <td>
                 <a href="<?= $BASE_URL ?>admin/kerajinan-edit.php?id=<?= $r['id'] ?>" 
-                 class="kb-btn-edit-sm me-2">
+                   class="kb-btn-edit-sm me-2">
                     Edit
-             </a>
+                </a>
 
-            <form method="POST" action="<?= $BASE_URL ?>admin/kerajinan-delete.php"
-                style="display:inline;"
-                onsubmit="return confirm('Yakin ingin menghapus kerajinan ini?');">
+                <form method="POST" action="<?= $BASE_URL ?>admin/kerajinan-delete.php"
+                      style="display:inline;"
+                      onsubmit="return confirm('Yakin ingin menghapus kerajinan ini?');">
 
-                <input type="hidden" name="id" value="<?= $r['id'] ?>">
-                <?= csrf_field() ?>
+                    <input type="hidden" name="id" value="<?= $r['id'] ?>">
+                    <?= csrf_field() ?>
 
-                <button type="submit" class="kb-btn-delete-sm">
-                    Hapus
-                </button>
-            </form>
-        </td>
-
+                    <button type="submit" class="kb-btn-delete-sm">
+                        Hapus
+                    </button>
+                </form>
+            </td>
 
         </tr>
         <?php endforeach; ?>
