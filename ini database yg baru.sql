@@ -46,7 +46,7 @@ CREATE TABLE `crafts` (
 
 INSERT INTO `crafts` (`id`, `artisan_id`, `region_id`, `category_id`, `title`, `description`, `location_address`, `address`, `latitude`, `longitude`, `price`, `image_path`, `created_at`) VALUES
 (1, 1, 1, 3, 'Patung Barong Kecil', 'Patung barong ukuran kecil, ukiran tangan', 'dimana aja boleh', NULL, NULL, NULL, '25000.00', 'public/uploads/crafts/1763814954-7773.png', '2025-11-22 12:32:46'),
-(2, 2, 2, 1, '1', '', 'diamana aja boleh hh', NULL, NULL, NULL, '200000.00', 'public/uploads/crafts/1763817447-7983.png', '2025-11-22 13:17:27');
+(2, 2, 2, 1, '1', '', 'diamana aja ', NULL, NULL, NULL, '200000.00', 'public/uploads/crafts/1763817447-7983.png', '2025-11-22 13:17:27');
 
 -- --------------------------------------------------------
 
@@ -70,6 +70,28 @@ INSERT INTO `craft_categories` (`id`, `name`) VALUES
 (4, 'Seni Patung'),
 (5, 'Aksesori'),
 (6, 'Keramik');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `craft_reviews`
+--
+
+CREATE TABLE `craft_reviews` (
+  `id` int NOT NULL,
+  `craft_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `rating` int NOT NULL,
+  `comment` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `craft_reviews`
+--
+
+INSERT INTO `craft_reviews` (`id`, `craft_id`, `user_id`, `rating`, `comment`, `created_at`) VALUES
+(1, 2, 8, 5, 'keren banget jir', '2025-11-24 02:16:39');
 
 -- --------------------------------------------------------
 
@@ -158,8 +180,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `verification_code`, `is_verified`, `verified_at`, `created_at`) VALUES
 (1, 'Admin', 'admin@kriya.local', '$2y$10$EskE7qZ3qmPPV/ZqQuuQ1e4AaY6Tlo5lOfpCYGsbYV2z999WCDZCC', 'admin', NULL, 1, '2025-11-22 12:32:46', '2025-11-22 12:32:46'),
-(2, 'dian', 'dian@gmail.com', '$2y$10$.ik9LZjK5mEwQtWIAUejF.S3SF/86G5nVCleO1a3kNvFxPj55fgMK', 'admin', NULL, 1, '2025-11-22 12:33:52', '2025-11-22 12:33:38'),
-(5, 'dania', 'dania@gmail.com', '$2y$10$u/PZNuXL8oFndeHkADEbU.fvTNy1b.DLlK4zZtP68qv1XVN278Wiq', 'admin', NULL, 1, '2025-11-22 13:48:54', '2025-11-22 13:48:54');
+(5, 'dania', 'dania@gmail.com', '$2y$10$u/PZNuXL8oFndeHkADEbU.fvTNy1b.DLlK4zZtP68qv1XVN278Wiq', 'admin', NULL, 1, '2025-11-22 13:48:54', '2025-11-22 13:48:54'),
+(6, 'dian', 'dian@gmail.com', '$2y$10$3hp3lPpgm6AL71rDpx/rLOPM0U/gWA0S51UbxgQ6N/O2VLzX9v8cy', 'user', NULL, 1, '2025-11-22 16:00:18', '2025-11-22 16:00:18'),
+(7, '123', '123@gmail.com', '$2y$10$/h100VdfyeeOKjzYeHkPp.Oocvic/Y02rb3ND/8TmRsb4ccrjN1ZW', 'user', NULL, 1, '2025-11-22 16:04:49', '2025-11-22 16:04:49'),
+(8, 'tino', 'tino@gmail.com', '$2y$10$/eYrK2ovwxa4tttl2eCwbO07u2fYOlfTcviXdSLGcLKG3Mfx3M7UW', 'user', NULL, 1, '2025-11-24 02:16:01', '2025-11-24 02:16:01');
 
 --
 -- Indexes for dumped tables
@@ -186,6 +210,14 @@ ALTER TABLE `crafts`
 --
 ALTER TABLE `craft_categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `craft_reviews`
+--
+ALTER TABLE `craft_reviews`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `craft_id` (`craft_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `deletes_log`
@@ -236,6 +268,12 @@ ALTER TABLE `craft_categories`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `craft_reviews`
+--
+ALTER TABLE `craft_reviews`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `deletes_log`
 --
 ALTER TABLE `deletes_log`
@@ -257,7 +295,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -276,6 +314,13 @@ ALTER TABLE `crafts`
   ADD CONSTRAINT `fk_crafts_artisan` FOREIGN KEY (`artisan_id`) REFERENCES `artisans` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_crafts_category` FOREIGN KEY (`category_id`) REFERENCES `craft_categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_crafts_region` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `craft_reviews`
+--
+ALTER TABLE `craft_reviews`
+  ADD CONSTRAINT `fk_reviews_craft` FOREIGN KEY (`craft_id`) REFERENCES `crafts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_reviews_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
