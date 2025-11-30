@@ -55,6 +55,27 @@ $crafts = db_fetch_all("
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
+
+    /* Kartu Kerajinan Interaktif */
+    .craft-card-interactive {
+        position: relative; /* Wajib untuk stretched-link */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+    
+    .craft-card-interactive:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(139, 94, 52, 0.15) !important;
+    }
+
+    /* Saat kartu dihover, tombol berubah warna */
+    .craft-card-interactive:hover .btn-action {
+        background-color: #B8863B;
+        color: white;
+        border-color: #B8863B;
+    }
 </style>
 
 <div class="container py-5">
@@ -65,7 +86,7 @@ $crafts = db_fetch_all("
         </a>
     </div>
 
-    <h1 class="fw-bold text-center mb-5" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
+    <h1 class="fw-bold text-center mb-5" style="color:#8B5E34; text-transform:uppercase;">
         Profil Seniman
     </h1>
 
@@ -83,7 +104,7 @@ $crafts = db_fetch_all("
 
         <div class="col-md-7">
             
-            <h2 class="fw-bold mb-3" style="color:#5A3E1B;">
+            <h2 class="fw-bold mb-3" style="color:#8B5E34;">
                 <?= htmlspecialchars($data['name']) ?>
             </h2>
 
@@ -114,7 +135,7 @@ $crafts = db_fetch_all("
     <hr class="my-5" style="border-top: 2px dashed #D4A15A;">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold mb-0" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
+        <h3 class="fw-bold mb-0" style="color:#8B5E34; text-transform:uppercase;">
             Karya Buatan <?= htmlspecialchars($data['name']) ?>
         </h3>
         <span class="badge bg-light text-dark border rounded-pill px-3">
@@ -135,30 +156,30 @@ $crafts = db_fetch_all("
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php foreach ($crafts as $c): ?>
             <div class="col">
-                <div class="card shadow-sm h-100 border-0" style="border-radius: 16px; overflow: hidden; transition: transform 0.2s;">
+                <div class="card shadow-sm h-100 craft-card-interactive">
                     
                     <?php if ($c['image_path']): ?>
-                        <div style="height: 220px; overflow: hidden;">
+                        <div style="height: 220px; overflow: hidden; border-radius: 16px 16px 0 0;">
                             <img src="<?= asset($c['image_path']) ?>" 
                                  class="card-img-top h-100 w-100"
                                  style="object-fit:cover;">
                         </div>
                     <?php else: ?>
-                        <div class="bg-secondary text-white p-4 text-center h-100 d-flex align-items-center justify-content-center">
+                        <div class="bg-secondary text-white p-4 text-center h-100 d-flex align-items-center justify-content-center" style="border-radius: 16px 16px 0 0;">
                             Tidak ada gambar
                         </div>
                     <?php endif; ?>
 
                     <div class="card-body">
-                        <h5 class="fw-bold text-dark mb-1" style="font-family: 'Playfair Display', serif;">
+                        <h5 class="fw-bold text-dark mb-1">
                             <?= htmlspecialchars($c['title']) ?>
                         </h5>
                         <p class="text-warning fw-bold mb-3">
                             Rp <?= number_format($c['price'], 0, ',', '.') ?>
                         </p>
 
-                        <a href="<?= $BASE_URL ?>kerajinan-detail.php?id=<?= $c['id'] ?>"
-                           class="btn btn-outline-warning w-100 rounded-pill fw-bold btn-sm">
+                        <a href="kerajinan-detail.php?id=<?= $c['id'] ?>"
+                           class="btn btn-outline-warning w-100 rounded-pill fw-bold btn-sm btn-action stretched-link">
                            Lihat Detail
                         </a>
                     </div>

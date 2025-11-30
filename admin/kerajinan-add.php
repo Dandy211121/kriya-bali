@@ -53,7 +53,7 @@ require_once __DIR__ . '/_layout_start.php';
 
     <div class="mb-3">
         <label>Lokasi Toko</label>
-        <input type="text" name="location_addres" class="form-control">
+        <input type="text" name="location_address" class="form-control">
     </div>
 
     <div class="mb-3">

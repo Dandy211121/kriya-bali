@@ -40,7 +40,7 @@ require_once __DIR__ . '/partials/navbar.php';
 <div class="container py-5">
 
     <div class="text-center mb-5">
-        <h1 class="fw-bold display-5" style="color:#8B5E34;">
+        <h1 class="fw-bold display-5" style="color:#8B5E34; text-transform:uppercase;">
             Tentang Kriya Bali
         </h1>
         

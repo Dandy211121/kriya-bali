@@ -67,16 +67,23 @@ require_once __DIR__ . '/_layout_start.php';
             </td>
 
             <!-- AKSI -->
-            <td>
+             <td>
                 <a href="pengrajin-edit.php?id=<?= $r['id'] ?>" 
-                   class="kb-btn-edit-sm me-2">Edit</a>
+                class="kb-btn-edit-sm me-2">Edit</a>
 
-                <a href="pengrajin-delete.php?id=<?= $r['id'] ?>"
-                   class="kb-btn-delete-sm"
-                   onclick="return confirm('Yakin ingin menghapus?')">
-                    Hapus
-                </a>
+                <form method="POST" action="<?= $BASE_URL ?>admin/pengrajin-delete.php"
+                      style="display:inline;"
+                      onsubmit="return confirm('Yakin ingin menghapus kerajinan ini?');">
+
+                    <input type="hidden" name="id" value="<?= $r['id'] ?>">
+                    <?= csrf_field() ?>
+
+                    <button type="submit" class="kb-btn-delete-sm">
+                        Hapus
+                    </button>
+                </form>
             </td>
+            
 
         </tr>
         <?php endforeach; ?>

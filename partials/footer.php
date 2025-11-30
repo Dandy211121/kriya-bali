@@ -3,7 +3,7 @@
 <footer class="mt-5" style="background:#8B5E34; color:white;">
     <div class="container py-4 text-center">
 
-        <h5 class="fw-bold mb-2">Kriya Bali</h5>
+        <h5 class="fw-bold mb-2" style="text-transform: uppercase;">Kriya Bali</h5>
         <p class="mb-3" style="opacity: .9;">
             Melestarikan budaya & kerajinan Bali melalui teknologi.
         </p>

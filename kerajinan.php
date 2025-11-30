@@ -101,9 +101,9 @@ $rows = db_fetch_all($sql, $params);
 
     /* Efek Hover Tombol (Tombol jadi solid saat kartu disorot) */
     .craft-card:hover .btn-detail {
-        background-color: #ffc107;
-        color: #000;
-        border-color: #ffc107;
+        background-color: #B8863B;
+        color: white;
+        border-color: #B8863B;
     }
 
     .craft-img-wrapper {
@@ -132,12 +132,33 @@ $rows = db_fetch_all($sql, $params);
     /* Bintang di Kartu */
     .star-mini { font-size: 0.8rem; color: #FFC107; }
     .star-mini-muted { font-size: 0.8rem; color: #e4e5e9; }
+
+    .btn-back-link {
+        color: #6c757d; /* Abu-abu lembut */
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px; /* Jarak ke judul */
+    }
+    
+    .btn-back-link:hover {
+        color: #8B5E34; /* Berubah jadi Coklat Kriya Bali saat disorot */
+        transform: translateX(-5px); /* Efek geser kiri sedikit */
+    }
 </style>
 
 <div class="container py-5">
+    <div>
+        <a href="index.php" class="btn-back-link">
+            <i class="bi bi-arrow-left"></i>Kembali ke Beranda
+        </a>
+    </div>
 
     <div class="text-center mb-5">
-        <h1 class="fw-bold display-5" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
+        <h1 class="fw-bold display-5" style="color:#8B5E34; text-transform:uppercase;">
             Galeri Kerajinan
         </h1>
         <div class="mx-auto my-3" style="width: 60px; height: 3px; background: #D4A15A;"></div>
@@ -223,7 +244,7 @@ $rows = db_fetch_all($sql, $params);
                             </small>
                         </div>
 
-                        <h5 class="fw-bold text-dark mb-1" style="font-family: 'Playfair Display', serif;">
+                        <h5 class="fw-bold text-dark mb-1">
                             <?= htmlspecialchars($row['title']) ?>
                         </h5>
                         
@@ -241,7 +262,7 @@ $rows = db_fetch_all($sql, $params);
                             
                             <a href="kerajinan-detail.php?id=<?= $row['id'] ?>" 
                                class="btn btn-outline-warning btn-sm rounded-pill px-3 btn-detail stretched-link fw-bold">
-                                Detail
+                                DETAIL
                             </a>
                         </div>
                     </div>

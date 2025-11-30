@@ -40,7 +40,7 @@
              class="mb-3 shadow-lg" 
              style="width: 140px; height: 140px; border-radius: 25%; border: 3px solid #fff; object-fit: cover;">
 
-        <h1 class="fw-bold display-5">
+        <h1 class="fw-bold display-5" style="text-transform: uppercase;">
             Selamat Datang di Kriya Bali
         </h1>
         
@@ -68,59 +68,137 @@
 <!-- ================================
      FITUR UTAMA
 ================================= -->
-<section class="container py-5">
+<section class="container-fluid py-5" style="background-color: #FFF7E6;">
 
-    <div class="text-center mb-5">
-        <h2 class="fw-bold" style="color:#8B5E34;">Eksplorasi Kriya Bali</h2>
-        <div class="mx-auto" style="width:90px; height:5px; background:#D4A15A; border-radius:10px;"></div>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap');
+
+        /* Judul Section & Kartu */
+        .font-serif-modern {
+            font-family: 'Playfair Display', serif;
+            color: #8B5E34; /* Coklat Kriya Bali */
+            font-weight: 700;
+        }
+
+        /* Teks Deskripsi */
+        .font-sans-modern {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #6C757D; /* Abu-abu lembut */
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Kartu Modern Interaktif */
+        .card-modern {
+            border: none;
+            border-radius: 20px;
+            background: #FFFFFF;
+            box-shadow: 0 10px 30px rgba(139, 94, 52, 0.05); /* Bayangan sangat halus */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 40px 25px;
+            height: 100%;
+            position: relative; /* Wajib untuk stretched-link */
+            cursor: pointer;    /* Ubah kursor jadi tangan */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-modern:hover {
+            transform: translateY(-10px); /* Naik saat hover */
+            box-shadow: 0 20px 40px rgba(139, 94, 52, 0.15);
+        }
+
+        /* Efek Hover Tombol saat Kartu Disorot */
+        .card-modern:hover .btn-modern-outline {
+            background-color: #D4A15A;
+            color: #fff;
+            border-color: #D4A15A;
+        }
+
+        /* Tombol Outline Modern */
+        .btn-modern-outline {
+            border: 1px solid #D4A15A;
+            color: #8B5E34;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            border-radius: 50px; /* Bentuk Pill */
+            padding: 12px 30px;
+            background: transparent;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: block;
+            margin-top: auto; /* Dorong ke bawah */
+        }
+        
+        /* Garis Bawah Judul */
+        .title-underline {
+            width: 70px; 
+            height: 4px; 
+            background: #D4A15A; 
+            margin: 15px auto; 
+            border-radius: 10px;
+        }
+    </style>
+
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-5" style="color:#8B5E34;">EKSPLORASI KRIYA BALI</h2>
+            <div class="title-underline"></div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-md-4">
+                <div class="card-modern text-center">
+                    <div class="fs-1 mb-3">👩‍🎨</div>
+                    
+                    <h4 class="fw-bold mb-3" style="color:#8B5E34;">Data Pengrajin</h4>
+                    
+                    <p class="font-sans-modern mb-4">
+                        Temukan profil lengkap para pengrajin berbakat dari berbagai daerah di Bali.
+                    </p>
+                    
+                    <a href="pengrajin.php" class="btn btn-modern-outline text-decoration-none stretched-link">
+                        Lihat Pengrajin
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card-modern text-center">
+                    <div class="fs-1 mb-3">🏺</div>
+                    
+                    <h4 class="fw-bold mb-3" style="color:#8B5E34;">Galeri Kerajinan</h4>
+                    
+                    <p class="font-sans-modern mb-4">
+                        Jelajahi koleksi karya seni mulai dari ukiran, anyaman, hingga lukisan handmade.
+                    </p>
+                    
+                    <a href="kerajinan.php" class="btn btn-modern-outline text-decoration-none stretched-link">
+                        Lihat Koleksi
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card-modern text-center">
+                    <div class="fs-1 mb-3">ℹ️</div>
+                    
+                    <h4 class="fw-bold mb-3" style="color:#8B5E34;">Tentang Kami</h4>
+                    
+                    <p class="font-sans-modern mb-4">
+                        Ketahui visi misi kami dalam melestarikan budaya Bali melalui teknologi digital.
+                    </p>
+                    
+                    <a href="tentang.php" class="btn btn-modern-outline text-decoration-none stretched-link">
+                        Baca Selengkapnya
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
-
-    <div class="row g-4">
-
-        <!-- Pengrajin -->
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius: 18px;">
-                <div class="fs-1 mb-3 kb-icon" style="color:#8B5E34;">👩‍🎨</div>
-                <h4 class="fw-bold" style="color:#8B5E34;">Data Pengrajin</h4>
-                <p class="lead mx-auto">
-                    Temukan profil lengkap para pengrajin berbakat dari berbagai daerah di Bali.
-                </p>
-                <a href="pengrajin.php" class="btn btn-outline-warning fw-bold px-4 rounded-pill mt-auto">
-                    Lihat Pengrajin
-                </a>
-            </div>
-        </div>
-
-        <!-- Kerajinan -->
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius: 18px;">
-                <div class="fs-1 mb-3 kb-icon" style="color:#8B5E34;">🏺</div>
-                <h4 class="fw-bold" style="color:#8B5E34;">Galeri Kerajinan</h4>
-                <p class="lead mx-auto">
-                    Jelajahi koleksi karya seni mulai dari ukiran, anyaman, hingga lukisan.
-                </p>
-                <a href="kerajinan.php" class="btn btn-outline-warning fw-bold px-4 rounded-pill mt-auto">
-                    Lihat Koleksi
-                </a>
-            </div>
-        </div>
-
-        <!-- Tentang -->
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius: 18px;">
-                <div class="fs-1 mb-3 kb-icon" style="color:#8B5E34;">ℹ️</div>
-                <h4 class="fw-bold" style="color:#8B5E34;">Tentang Kami</h4>
-                <p class="lead mx-auto">
-                    Ketahui visi misi kami dalam melestarikan budaya Bali melalui teknologi.
-                </p>
-                <a href="tentang.php" class="btn btn-outline-warning fw-bold px-4 rounded-pill mt-auto">
-                    Baca Selengkapnya
-                </a>
-            </div>
-        </div>
-
-    </div>
-
 </section>
 
 

@@ -89,9 +89,9 @@ $rows = db_fetch_all($sql, $params);
 
     /* Efek Hover: Tombol berubah warna saat kartu disorot */
     .artisan-card:hover .btn-action {
-        background-color: #ffc107;
-        color: #000;
-        border-color: #ffc107;
+        background-color: #B8863B;
+        color: white;
+        border-color: #B8863B;
     }
 
     .artisan-img-wrapper {
@@ -127,13 +127,35 @@ $rows = db_fetch_all($sql, $params);
         z-index: 2; /* Di atas stretched link */
         position: relative; /* Agar badge tetap bisa diklik terpisah jika perlu */
     }
+
+    .btn-back-link {
+        color: #6c757d; /* Abu-abu lembut */
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px; /* Jarak ke judul */
+    }
+    
+    .btn-back-link:hover {
+        color: #8B5E34; /* Berubah jadi Coklat Kriya Bali saat disorot */
+        transform: translateX(-5px); /* Efek geser kiri sedikit */
+    }
 </style>
 
 <div class="container py-5">
 
+    <div>
+        <a href="index.php" class="btn-back-link">
+            <i class="bi bi-arrow-left"></i>Kembali ke Beranda
+        </a>
+    </div>
+
     <div class="text-center mb-5">
-        <h2 class="fw-bold" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
-            Daftar Pengrajin
+        <h2 class="fw-bold display-5" style="color:#8B5E34;">
+            DAFTAR PENGRAJIN
         </h2>
         <div class="mx-auto mt-2" style="width:90px; height:5px; background:#D4A15A; border-radius:10px;"></div>
         <p class="text-muted mt-3">Profil seniman dan pengrajin berbakat dari seluruh Bali.</p>
@@ -233,9 +255,9 @@ $rows = db_fetch_all($sql, $params);
     <?php else: ?>
         <div class="text-center py-5">
             <i class="bi bi-person-x display-1 text-muted opacity-25"></i>
-            <h3 class="fw-bold mt-3" style="color:#8B5E34;">Tidak Ada Pengrajin</h3>
+            <h3 class="fw-bold mt-3" style="color:#8B5E34;">Tidak Ada Pengrajin !</h3>
             <p class="text-muted">Coba cari dengan kata kunci lain.</p>
-            <a href="pengrajin.php" class="btn btn-outline-warning rounded-pill mt-2 fw-bold">Reset Filter</a>
+            <a href="pengrajin.php" class="btn btn-outline-warning rounded-pill mt-2 fw-bold" style="text-transform:uppercase;">Reset Filter</a>
         </div>
     <?php endif; ?>
 

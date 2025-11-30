@@ -8,7 +8,7 @@ $artisan = $_POST['artisan_id'];
 $region = $_POST['region_id'];
 $category = $_POST['category_id'];
 $desc = $_POST['description'];
-$location = $_POST['location_addres'];
+$location = $_POST['location_address'];
 $price = $_POST['price'];
 
 $imagePath = null;
@@ -22,7 +22,7 @@ if (!empty($_FILES['image']['name'])) {
 
 db_exec("
     INSERT INTO crafts 
-    (title, artisan_id, region_id, category_id, description, location_addres, price, image_path, created_at)
+    (title, artisan_id, region_id, category_id, description, location_address, price, image_path, created_at)
     VALUES
     (:t, :a, :r, :c, :d, :l, :p, :img, NOW())
 ", [

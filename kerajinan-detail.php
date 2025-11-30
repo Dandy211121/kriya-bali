@@ -107,7 +107,7 @@ $lokasi_toko = $data['location_address'] ?? null;
     </div>
 
     <div class="text-center mb-4">
-        <h1 class="fw-bold mb-2" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
+        <h1 class="fw-bold mb-2" style="color:#8B5E34; text-transform: uppercase;">
             <?= htmlspecialchars($data['title']) ?>
         </h1>
         
@@ -146,13 +146,13 @@ $lokasi_toko = $data['location_address'] ?? null;
                     <span class="badge bg-light text-dark border fw-semibold px-3 py-2">📍 <?= htmlspecialchars($data['region_name']) ?></span>
                 </div>
 
-                <p class="fs-5 mb-1"><b>Pengrajin:</b> <span style="color:#8B5E34;"><?= htmlspecialchars($data['artisan_name']) ?></span></p>
+                <p class="fs-5 mb-1"><b>Pengrajin:</b> <span class="fw-bold" style="color:#B8863B; " ><?= htmlspecialchars($data['artisan_name']) ?></span></p>
                 <p class="fs-4 mb-3"><b>Harga:</b> <span class="fw-bold" style="color:#B8863B;">Rp <?= number_format($data['price'], 0, ',', '.') ?></span></p>
                 <p class="mb-0"><b>Lokasi Toko:</b> <br><?= $lokasi_toko ? htmlspecialchars($lokasi_toko) : '-' ?></p>
             </div>
 
             <div class="mb-5">
-                <h4 class="fw-bold mb-3" style="color:#8B5E34; font-family: 'Playfair Display', serif;">
+                <h4 class="fw-bold mb-3" style="color:#8B5E34;">
                     Deskripsi Kerajinan
                 </h4>
 
@@ -170,7 +170,7 @@ $lokasi_toko = $data['location_address'] ?? null;
 
             <hr class="my-5" style="border-top: 2px dashed #D4A15A;">
 
-            <h3 class="fw-bold mb-4" style="color:#8B5E34; font-family: 'Playfair Display', serif;">Ulasan Pengguna</h3>
+            <h3 class="fw-bold mb-4" style="color:#8B5E34;">Ulasan Pengguna</h3>
 
             <?php if (is_logged_in()): ?>
                 <div class="card border-0 shadow-sm p-4 mb-5" style="border-radius: 18px; background: #fffcf5;">
